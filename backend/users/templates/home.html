@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Bienvenue {{ user.username }} 👋</h1>
+
+<p>Voici les produits recommandés :</p>
+
+<div style="display:grid; grid-template-columns: repeat(3,1fr); gap:20px;">
+
+{% for p in produits %}
+<div style="border:1px solid #ddd; padding:10px;">
+    <h3>{{ p.nom }}</h3>
+    <p>{{ p.prix }} DH</p>
+
+    <a href="/panier/ajouter/{{ p.id }}/">
+        ➕ Ajouter au panier
+    </a>
+</div>
+{% endfor %}
+
+</div>
+
+<hr>
+
+<a href="/panier/">🛒 Voir mon panier</a>
+<br>
+<a href="/commande/confirmation/">🧾 Mes commandes</a>
+
+{% endblock %}

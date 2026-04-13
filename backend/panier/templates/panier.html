@@ -1,0 +1,24 @@
+<h1>🛒 Mon Panier</h1>
+
+{% for item in articles %}
+<div style="border:1px solid #ddd; padding:10px; margin:10px;">
+    <h3>{{ item.produit.nom }}</h3>
+    <p>Prix : {{ item.produit.prix }} DH</p>
+    <p>Quantité : {{ item.quantite }}</p>
+    <p>Total : {{ item.produit.prix}} × {{ item.quantite }}</p>
+
+    <a href="/panier/supprimer/{{ item.id }}/">❌ Supprimer</a>
+</div>
+{% empty %}
+<p>Ton panier est vide 😢</p>
+{% endfor %}
+
+<hr>
+
+<h2>Total : {{ total }} DH</h2>
+<a href="/commande/checkout/">
+    🧾 Valider la commande
+</a>
+<hr>
+
+

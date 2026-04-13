@@ -1,0 +1,19 @@
+{% for produit in produits %}
+    <h3>{{ produit.nom }}</h3>
+
+    {% if produit.image %}
+        <img src="{{ produit.image.url }}" width="200">
+    {% endif %}
+
+    <p>{{ produit.prix }} DH</p>
+    <p>{{ produit.description }}</p>
+    <form method="POST" action="/panier/ajouter/{{ produit.id }}/">
+    {% csrf_token %}
+
+    <input type="number" name="quantite" value="1" min="1">
+
+    <button type="submit">➕ Ajouter au panier</button>
+</form>
+</a>
+    
+{% endfor %}
