@@ -3,29 +3,30 @@
 <head>
     <title>E-Commerce</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="/">MonShop</a>
+{% if user.is_authenticated and not hide_nav %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">MonShop</a>
 
-        <div>
-            <a class="btn btn-light" href="/produits/">Produits</a>
-            <a class="btn btn-warning" href="/panier/">Panier</a>
-
-            {% if user.is_authenticated %}
+            <div>
+                <a class="btn btn-light" href="/produits/">Produits</a>
+                <a class="btn btn-info" href="/produits/categories/">Categories</a>
+                <a class="btn btn-warning" href="/panier/">Panier</a>
+                {% if user.is_staff or user.role == 'admin' %}
+                    <a class="btn btn-secondary" href="/gestion/">Gestion</a>
+                {% endif %}
                 <a class="btn btn-danger" href="/logout/">Logout</a>
-            {% else %}
-                <a class="btn btn-success" href="/users/login/">Login</a>
-                <a class="btn btn-info" href="/users/register/">Register</a>
-            {% endif %}
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+{% endif %}
 
-<div class="container mt-4">
+<div class="{% if full_layout %}m-0 p-0{% else %}container mt-4{% endif %}">
     {% block content %}
     {% endblock %}
 </div>

@@ -1,7 +1,7 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.http import HttpResponse
 
+from users.permissions import admin_required
+
+@admin_required
 def home(request):
     return HttpResponse("Chatbot OK ✔")

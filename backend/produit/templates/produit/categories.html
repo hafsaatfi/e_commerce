@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Categories</h2>
+    {% if user.is_authenticated and user.is_staff or user.role == 'admin' %}
+        <a href="{% url 'produit:creer_categorie' %}" class="btn btn-primary">Ajouter une categorie</a>
+    {% endif %}
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for categorie in categories %}
+                    <tr>
+                        <td>
+                            {% if categorie.image %}
+                                <img src="{{ categorie.image.url }}" alt="Image de la catégorie" style="max-height:45px; max-width:70px; border-radius:8px; box-shadow:0 1px 4px #f8bbd0;">
+                            {% endif %}
+                        </td>
+                        <td>{{ categorie.nom }}</td>
+                        <td>{{ categorie.description|truncatewords:15 }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'produit:detail_categorie' categorie.id %}" class="btn btn-sm btn-outline-primary">Detail</a>
+                            {% if user.is_authenticated and user.is_staff or user.role == 'admin' %}
+                                <a href="{% url 'produit:modifier_categorie' categorie.id %}" class="btn btn-sm btn-outline-warning">Modifier</a>
+                                <a href="{% url 'produit:supprimer_categorie' categorie.id %}" class="btn btn-sm btn-outline-danger">Supprimer</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted py-4">Aucune categorie disponible.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

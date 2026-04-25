@@ -1,12 +1,105 @@
-<h2>Login</h2>
 
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name="username" placeholder="Username">
-    <input type="password" name="password" placeholder="Password">
-    <button type="submit">Login</button>
-</form>
+{% extends 'base.html' %}
+{% block extra_head %}
+    <style>
+        body {
+            background: linear-gradient(120deg, #ffe4ec 0%, #f3e6fa 100%);
+            font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+        }
+        .cosmetic-card {
+            border: none;
+            border-radius: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(255, 182, 193, 0.15), 0 1.5px 8px 0 #e0b3d6;
+            overflow: hidden;
+        }
+        .cosmetic-side {
+            background: linear-gradient(135deg, #f8bbd0 0%, #e1bee7 60%, #fffde7 100%);
+            color: #a64ca6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100%;
+        }
+        .cosmetic-side h2 {
+            color: #d63384;
+            font-weight: 700;
+        }
+        .cosmetic-side p, .cosmetic-side small {
+            color: #a64ca6;
+        }
+        .cosmetic-form {
+            background: #fff;
+            border-radius: 2rem;
+        }
+        .btn-cosmetic {
+            background: linear-gradient(90deg, #f8bbd0 0%, #e1bee7 100%);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 2rem;
+            box-shadow: 0 2px 8px 0 #f8bbd0;
+            transition: background 0.3s, color 0.3s;
+        }
+        .btn-cosmetic:hover {
+            background: linear-gradient(90deg, #e1bee7 0%, #f8bbd0 100%);
+            color: #d63384;
+        }
+        .cosmetic-logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #d63384;
+            letter-spacing: 2px;
+        }
+        .gold-divider {
+            border-top: 2px solid #ffd700;
+            opacity: 0.4;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+{% endblock %}
 
-{% if error %}
-<p style="color:red;">{{ error }}</p>
-{% endif %}
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: calc(100vh - 140px);">
+    <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+        <div class="card cosmetic-card">
+            <div class="row g-0">
+                <div class="col-md-5 cosmetic-side p-4 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="cosmetic-logo mb-2">CosméBeauty</div>
+                        <h2 class="fw-bold mb-3">Connexion</h2>
+                        <p class="mb-0">
+                            Accédez à votre espace pour découvrir nos produits de beauté, gérer votre panier et suivre vos commandes.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-4 gold-divider">
+                        <small>Beauté, élégance et sécurité.</small>
+                    </div>
+                </div>
+                <div class="col-md-7 p-4 p-lg-5 cosmetic-form">
+                    <h3 class="mb-2" style="color:#d63384; font-weight:600;">Bienvenue !</h3>
+                    <p class="text-muted mb-4">Connectez-vous pour continuer votre expérience beauté.</p>
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+                    <form method="POST" class="d-grid gap-3">
+                        {% csrf_token %}
+                        <div>
+                            <label for="id_username" class="form-label" style="color:#a64ca6;">Nom d'utilisateur</label>
+                            <input type="text" id="id_username" name="username" class="form-control form-control-lg" placeholder="Votre nom d'utilisateur" autocomplete="username" style="border-radius:1.5rem; border:1.5px solid #f8bbd0;">
+                        </div>
+                        <div>
+                            <label for="id_password" class="form-label" style="color:#a64ca6;">Mot de passe</label>
+                            <input type="password" id="id_password" name="password" class="form-control form-control-lg" placeholder="Votre mot de passe" autocomplete="current-password" style="border-radius:1.5rem; border:1.5px solid #e1bee7;">
+                        </div>
+                        <button type="submit" class="btn btn-cosmetic btn-lg">Se connecter</button>
+                    </form>
+                    <p class="mt-4 mb-0 text-muted">
+                        Vous n'avez pas de compte ?
+                        <a href="{% url 'register' %}" class="fw-semibold" style="color:#d63384;">Inscrivez-vous</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

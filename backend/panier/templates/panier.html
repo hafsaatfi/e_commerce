@@ -1,24 +1,146 @@
-<h1>🛒 Mon Panier</h1>
 
-{% for item in articles %}
-<div style="border:1px solid #ddd; padding:10px; margin:10px;">
-    <h3>{{ item.produit.nom }}</h3>
-    <p>Prix : {{ item.produit.prix }} DH</p>
-    <p>Quantité : {{ item.quantite }}</p>
-    <p>Total : {{ item.produit.prix}} × {{ item.quantite }}</p>
+<style>
+    body {
+        background: #fff8f6;
+        font-family: 'Manrope', 'Segoe UI', Arial, sans-serif;
+    }
+    .panier-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 4px 32px #e9b6c122;
+        padding: 32px 24px 24px 24px;
+    }
+    .panier-title {
+        font-family: 'Noto Serif', serif;
+        color: #bfa2db;
+        font-size: 2.2rem;
+        margin-bottom: 28px;
+        text-align: center;
+        letter-spacing: 0.04em;
+    }
+    .panier-item {
+        background: #f7e9f0;
+        border-radius: 14px;
+        box-shadow: 0 2px 8px #e9b6c133;
+        padding: 20px 18px 18px 18px;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: flex-start;
+        gap: 18px;
+    }
+    .panier-item-info {
+        flex: 1;
+    }
+    .panier-item-title {
+        font-family: 'Noto Serif', serif;
+        color: #7b5455;
+        font-size: 1.2rem;
+        margin-bottom: 6px;
+    }
+    .panier-item-price {
+        color: #a07a78;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+    .panier-qty-form {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+    .panier-qty-input {
+        width: 60px;
+        border: 1px solid #f3e1e7;
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 1rem;
+        background: #fff;
+        color: #7b5455;
+    }
+    .panier-btn {
+        background: linear-gradient(90deg, #e9b6c1 0%, #bfa2db 100%);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 16px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-left: 8px;
+    }
+    .panier-btn:hover {
+        background: linear-gradient(90deg, #bfa2db 0%, #e9b6c1 100%);
+    }
+    .panier-remove {
+        color: #e57373;
+        font-size: 1.2rem;
+        text-decoration: none;
+        margin-left: 12px;
+        transition: color 0.2s;
+    }
+    .panier-remove:hover {
+        color: #b71c1c;
+    }
+    .panier-total {
+        font-size: 1.3rem;
+        color: #7b5455;
+        font-family: 'Noto Serif', serif;
+        text-align: right;
+        margin: 24px 0 12px 0;
+    }
+    .panier-checkout {
+        display: block;
+        width: 100%;
+        background: linear-gradient(90deg, #e9b6c1 0%, #bfa2db 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 14px 0;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 10px;
+        text-decoration: none;
+        box-shadow: 0 2px 12px #e9b6c122;
+        transition: background 0.2s;
+    }
+    .panier-checkout:hover {
+        background: linear-gradient(90deg, #bfa2db 0%, #e9b6c1 100%);
+    }
+    .panier-empty {
+        text-align: center;
+        color: #a07a78;
+        font-size: 1.1rem;
+        margin: 40px 0;
+    }
+</style>
 
-    <a href="/panier/supprimer/{{ item.id }}/">❌ Supprimer</a>
+<div class="panier-container">
+    <div class="panier-title">🛒 Mon Panier</div>
+    {% for item in articles %}
+    <div class="panier-item">
+        <div class="panier-item-info">
+            <div class="panier-item-title">{{ item.produit.nom }}</div>
+            <div class="panier-item-price">Prix : {{ item.produit.prix }} DH</div>
+            <form action="/panier/modifier/{{ item.id }}/" method="post" class="panier-qty-form">
+                {% csrf_token %}
+                <label>Quantité :
+                    <input type="number" name="quantite" value="{{ item.quantite }}" min="1" class="panier-qty-input">
+                </label>
+                <button type="submit" class="panier-btn">Mettre à jour</button>
+            </form>
+            <div>Total : <b>{{ item.produit.prix }} × {{ item.quantite }}</b></div>
+        </div>
+        <a href="/panier/supprimer/{{ item.id }}/" class="panier-remove" title="Supprimer">❌</a>
+    </div>
+    {% empty %}
+    <div class="panier-empty">Ton panier est vide 😢</div>
+    {% endfor %}
+    <div class="panier-total">Total : {{ total }} DH</div>
+    <a href="/commande/checkout/" class="panier-checkout">🧾 Valider la commande</a>
 </div>
-{% empty %}
-<p>Ton panier est vide 😢</p>
-{% endfor %}
-
-<hr>
-
-<h2>Total : {{ total }} DH</h2>
-<a href="/commande/checkout/">
-    🧾 Valider la commande
-</a>
-<hr>
 
 

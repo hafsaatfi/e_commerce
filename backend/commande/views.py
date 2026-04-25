@@ -1,9 +1,9 @@
 from django.shortcuts import redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from panier.models import Panier, ArticlePanier
 from .models import Commande, ArticleCommande
+from users.permissions import admin_required
 
-@login_required
+@admin_required
 def passer_commande(request):
     panier = get_object_or_404(Panier, utilisateur=request.user)
     articles = ArticlePanier.objects.filter(panier=panier)
@@ -40,5 +40,6 @@ def passer_commande(request):
     return redirect('/commande/confirmation/')
 from django.http import HttpResponse
 
+@admin_required
 def confirmation(request):
     return HttpResponse("Commande confirmée ✔")

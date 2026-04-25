@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#7b5455',
+                    'primary-container': '#d4a5a5',
+                    surface: '#fff8f6',
+                    'surface-bright': '#fff8f6',
+                    'surface-container': '#f4ecea',
+                    'surface-container-low': '#faf2f0',
+                    'surface-container-high': '#eee6e5',
+                    'surface-container-highest': '#e9e1df',
+                    'outline-variant': '#d4c2c2',
+                    'on-surface': '#1e1b1a',
+                    'on-surface-variant': '#504444',
+                    'on-primary': '#ffffff',
+                    error: '#ba1a1a',
+                },
+                fontFamily: {
+                    headline: ['Noto Serif', 'serif'],
+                    body: ['Manrope', 'sans-serif'],
+                },
+            },
+        },
+    };
+</script>
+<style>
+    body { font-family: 'Manrope', sans-serif; background: #fff8f6; color: #1e1b1a; }
+    .noto-serif { font-family: 'Noto Serif', serif; }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 24;
+        font-size: 20px;
+        line-height: 1;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #fff8f6; }
+    ::-webkit-scrollbar-thumb { background: #d4c2c2; border-radius: 999px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex overflow-hidden bg-surface text-on-surface">
+    <aside class="hidden lg:flex flex-col w-72 bg-surface-container border-r border-outline-variant/40 h-screen sticky top-0">
+        <div class="p-8">
+            <h1 class="noto-serif text-2xl font-bold tracking-[0.15em] text-primary">ATELIER SILK</h1>
+            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mt-1 opacity-60">Admin Console</p>
+        </div>
+        <nav class="flex-grow px-4 space-y-2 overflow-y-auto">
+            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if request.resolver_match.url_name == 'dashboard' %}bg-primary text-on-primary shadow-lg shadow-primary/20{% else %}hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface{% endif %}" href="{% url 'gestion:dashboard' %}">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="text-sm font-semibold">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if entity == 'utilisateurs' %}bg-primary text-on-primary shadow-lg shadow-primary/20{% else %}hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface{% endif %}" href="{% url 'gestion:entity_list' 'utilisateurs' %}">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-sm font-semibold">Gestion des utilisateurs</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if entity == 'commandes' or entity == 'articles-commandes' %}bg-primary text-on-primary shadow-lg shadow-primary/20{% else %}hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface{% endif %}" href="{% url 'gestion:entity_list' 'commandes' %}">
+                <span class="material-symbols-outlined">local_shipping</span>
+                <span class="text-sm font-semibold">Gestion des commandes</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if entity == 'produits' or entity == 'categories' %}bg-primary text-on-primary shadow-lg shadow-primary/20{% else %}hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface{% endif %}" href="{% url 'gestion:entity_list' 'produits' %}">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <span class="text-sm font-semibold">Gestion des produits</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if entity == 'paniers' or entity == 'articles-paniers' %}bg-primary text-on-primary shadow-lg shadow-primary/20{% else %}hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface{% endif %}" href="{% url 'gestion:entity_list' 'paniers' %}">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <span class="text-sm font-semibold">Gestion des paniers</span>
+            </a>
+        </nav>
+        <div class="p-6 mt-auto bg-surface-container-low border-t border-outline-variant/20">
+            <div class="flex items-center justify-between gap-3">
+                <div>
+                    <p class="text-xs font-bold text-primary uppercase">{{ request.user.username }}</p>
+                    <p class="text-[10px] text-on-surface-variant">Administrateur</p>
+                </div>
+                <a href="{% url 'logout' %}" class="text-on-surface-variant hover:text-error transition-colors" title="Logout">
+                    <span class="material-symbols-outlined">logout</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div class="flex-grow flex flex-col h-screen overflow-y-auto">
+        <header class="sticky top-0 z-40 bg-surface-bright/90 backdrop-blur-xl border-b border-outline-variant/20 px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div>
+                <h2 class="noto-serif text-2xl font-bold text-on-surface">{% block gestion_title %}Espace administrateur{% endblock %}</h2>
+                <p class="text-xs text-on-surface-variant">Pilotage centralise de votre plateforme</p>
+            </div>
+            <a href="{% url 'gestion:entity_create' 'produits' %}" class="hidden md:inline-flex items-center gap-2 bg-primary px-4 py-2 rounded-full text-on-primary text-[11px] font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-md shadow-primary/10">
+                <span class="material-symbols-outlined text-sm">add</span>
+                <span>Nouveau produit</span>
+            </a>
+        </header>
+
+        <main class="p-6 lg:p-10 space-y-6">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="rounded-2xl border px-4 py-3 text-sm {% if message.tags == 'error' %}bg-red-50 text-red-700 border-red-200{% else %}bg-emerald-50 text-emerald-700 border-emerald-200{% endif %}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            {% block gestion_content %}{% endblock %}
+        </main>
+    </div>
+</div>
+
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-bright/90 backdrop-blur-xl shadow-[0_-12px_48px_rgba(30,27,26,0.06)] lg:hidden border-t border-outline-variant/20">
+    <a class="flex flex-col items-center justify-center {% if request.resolver_match.url_name == 'dashboard' %}text-primary{% else %}text-on-surface-variant{% endif %}" href="{% url 'gestion:dashboard' %}">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="text-[10px] font-medium">Dash</span>
+    </a>
+    <a class="flex flex-col items-center justify-center {% if entity == 'produits' or entity == 'categories' %}text-primary{% else %}text-on-surface-variant{% endif %}" href="{% url 'gestion:entity_list' 'produits' %}">
+        <span class="material-symbols-outlined">inventory_2</span>
+        <span class="text-[10px] font-medium">Produits</span>
+    </a>
+    <a class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-full px-5 py-1 scale-110 shadow-lg" href="{% url 'gestion:entity_create' 'produits' %}">
+        <span class="material-symbols-outlined">add</span>
+    </a>
+    <a class="flex flex-col items-center justify-center {% if entity == 'commandes' or entity == 'articles-commandes' %}text-primary{% else %}text-on-surface-variant{% endif %}" href="{% url 'gestion:entity_list' 'commandes' %}">
+        <span class="material-symbols-outlined">local_shipping</span>
+        <span class="text-[10px] font-medium">Commandes</span>
+    </a>
+    <a class="flex flex-col items-center justify-center {% if entity == 'utilisateurs' %}text-primary{% else %}text-on-surface-variant{% endif %}" href="{% url 'gestion:entity_list' 'utilisateurs' %}">
+        <span class="material-symbols-outlined">group</span>
+        <span class="text-[10px] font-medium">Users</span>
+    </a>
+</nav>
+{% endblock %}

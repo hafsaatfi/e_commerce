@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center gap-3">
+        {% if categorie.image %}
+            <img src="{{ categorie.image.url }}" alt="Image de la catégorie" style="max-height:70px; max-width:110px; border-radius:12px; box-shadow:0 2px 8px #f8bbd0;">
+        {% endif %}
+        <h2 class="mb-0">{{ categorie.nom }}</h2>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'produit:modifier_categorie' categorie.id %}" class="btn btn-warning">Modifier</a>
+        <a href="{% url 'produit:supprimer_categorie' categorie.id %}" class="btn btn-danger">Supprimer</a>
+    </div>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5>Description</h5>
+        <p class="mb-0">{{ categorie.description }}</p>
+    </div>
+</div>
+
+<h4>Produits de cette categorie</h4>
+<div class="list-group mb-3">
+    {% for produit in produits %}
+        <a href="{% url 'produit:detail_produit' produit.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <span>{{ produit.nom }}</span>
+            <span class="badge bg-primary rounded-pill">{{ produit.prix }} DH</span>
+        </a>
+    {% empty %}
+        <div class="list-group-item text-muted">Aucun produit dans cette categorie.</div>
+    {% endfor %}
+</div>
+
+<a href="{% url 'produit:liste_categories' %}" class="btn btn-secondary">Retour a la liste</a>
+{% endblock %}
