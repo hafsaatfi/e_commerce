@@ -49,7 +49,7 @@
 <div class="min-h-screen flex overflow-hidden bg-surface text-on-surface">
     <aside class="hidden lg:flex flex-col w-72 bg-surface-container border-r border-outline-variant/40 h-screen sticky top-0">
         <div class="p-8">
-            <h1 class="noto-serif text-2xl font-bold tracking-[0.15em] text-primary">ATELIER SILK</h1>
+            <h1 class="noto-serif text-2xl font-bold tracking-[0.15em] text-primary">CosméBeauty</h1>
             <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mt-1 opacity-60">Admin Console</p>
         </div>
         <nav class="flex-grow px-4 space-y-2 overflow-y-auto">
@@ -88,10 +88,10 @@
     </aside>
 
     <div class="flex-grow flex flex-col h-screen overflow-y-auto">
-        <header class="sticky top-0 z-40 bg-surface-bright/90 backdrop-blur-xl border-b border-outline-variant/20 px-6 lg:px-8 py-4 flex justify-between items-center">
+        <header class="sticky top-0 z-40 bg-pink-100/90 backdrop-blur-xl border-b border-pink-200/20 px-6 lg:px-8 py-4 flex justify-between items-center">
             <div>
-                <h2 class="noto-serif text-2xl font-bold text-on-surface">{% block gestion_title %}Espace administrateur{% endblock %}</h2>
-                <p class="text-xs text-on-surface-variant">Pilotage centralise de votre plateforme</p>
+                <h2 class="noto-serif text-2xl font-bold text-pink-800">{% block gestion_title %}Espace administrateur{% endblock %}</h2>
+                <p class="text-xs text-pink-600">Gestion élégante et féminine de votre plateforme</p>
             </div>
             <a href="{% url 'gestion:entity_create' 'produits' %}" class="hidden md:inline-flex items-center gap-2 bg-primary px-4 py-2 rounded-full text-on-primary text-[11px] font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-md shadow-primary/10">
                 <span class="material-symbols-outlined text-sm">add</span>

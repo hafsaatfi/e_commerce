@@ -4,14 +4,14 @@
 
 {% block gestion_content %}
 <div class="flex justify-between items-center mb-6">
-    <h2 class="noto-serif text-3xl">Liste - {{ label }}</h2>
+    <h2 class="noto-serif text-3xl text-pink-800">Liste - {{ label }}</h2>
     <div class="flex gap-2">
         <a href="{% url 'gestion:dashboard' %}" class="px-4 py-2 rounded-xl border border-outline-variant/40 text-xs font-bold uppercase tracking-widest">Dashboard</a>
         <a href="{% url 'gestion:entity_create' entity %}" class="px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-bold uppercase tracking-widest">Ajouter</a>
     </div>
 </div>
 
-<div class="bg-white rounded-3xl border border-outline-variant/30 overflow-hidden">
+<div class="bg-pink-50 rounded-3xl border border-pink-200 overflow-hidden">
     <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead>

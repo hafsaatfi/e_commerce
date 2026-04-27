@@ -1,19 +1,78 @@
+
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_head %}
+<style>
+    header.fixed.top-0 { display: none !important; }
+    .cat-title {
+        font-family: 'Noto Serif', serif;
+        color: #bfa2db;
+        font-size: 2.2rem;
+        letter-spacing: 0.04em;
+        margin-bottom: 0;
+    }
+    .cat-desc-card {
+        background: #fff8f6;
+        border-radius: 18px;
+        box-shadow: 0 2px 16px #e9b6c122;
+        border: none;
+    }
+    .cat-img {
+        max-height: 90px;
+        max-width: 140px;
+        border-radius: 16px;
+        box-shadow: 0 2px 12px #e9b6c133;
+        margin-right: 18px;
+    }
+    .cat-prod-list .list-group-item {
+        background: #f7e9f0;
+        border: none;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        color: #7b5455;
+        font-size: 1.1rem;
+        font-family: 'Manrope', Arial, sans-serif;
+        transition: box-shadow 0.2s;
+    }
+    .cat-prod-list .list-group-item:hover {
+        box-shadow: 0 2px 8px #bfa2db44;
+        background: #f3e1e7;
+    }
+    .cat-prod-list .badge {
+        background: linear-gradient(90deg, #e9b6c1 0%, #bfa2db 100%);
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 8px 18px;
+    }
+    .cat-back-btn {
+        background: linear-gradient(90deg, #bfa2db 0%, #e9b6c1 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 28px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-top: 18px;
+        box-shadow: 0 2px 8px #e9b6c133;
+        text-decoration: none;
+        display: inline-block;
+        transition: background 0.2s;
+    }
+    .cat-back-btn:hover {
+        background: linear-gradient(90deg, #e9b6c1 0%, #bfa2db 100%);
+        color: #fff;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <div class="d-flex align-items-center gap-3">
-        {% if categorie.image %}
-            <img src="{{ categorie.image.url }}" alt="Image de la catégorie" style="max-height:70px; max-width:110px; border-radius:12px; box-shadow:0 2px 8px #f8bbd0;">
-        {% endif %}
-        <h2 class="mb-0">{{ categorie.nom }}</h2>
-    </div>
-    <div class="d-flex gap-2">
-        <a href="{% url 'produit:modifier_categorie' categorie.id %}" class="btn btn-warning">Modifier</a>
-        <a href="{% url 'produit:supprimer_categorie' categorie.id %}" class="btn btn-danger">Supprimer</a>
-    </div>
+<div class="d-flex align-items-center mb-4">
+    {% if categorie.image %}
+        <img src="{{ categorie.image.url }}" alt="Image de la catégorie" class="cat-img">
+    {% endif %}
+    <h2 class="cat-title">{{ categorie.nom }}</h2>
 </div>
 
 {% if messages %}
@@ -22,24 +81,24 @@
     {% endfor %}
 {% endif %}
 
-<div class="card mb-4">
+<div class="card mb-4 cat-desc-card">
     <div class="card-body">
-        <h5>Description</h5>
+        <h5 style="color:#bfa2db; font-family:'Noto Serif',serif;">Description</h5>
         <p class="mb-0">{{ categorie.description }}</p>
     </div>
 </div>
 
-<h4>Produits de cette categorie</h4>
-<div class="list-group mb-3">
+<h4 style="color:#a07a78; font-family:'Noto Serif',serif; margin-bottom:18px;">Produits de cette catégorie</h4>
+<div class="cat-prod-list mb-3">
     {% for produit in produits %}
         <a href="{% url 'produit:detail_produit' produit.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
             <span>{{ produit.nom }}</span>
-            <span class="badge bg-primary rounded-pill">{{ produit.prix }} DH</span>
+            <span class="badge rounded-pill">{{ produit.prix }} DH</span>
         </a>
     {% empty %}
-        <div class="list-group-item text-muted">Aucun produit dans cette categorie.</div>
+        <div class="list-group-item text-muted">Aucun produit dans cette catégorie.</div>
     {% endfor %}
 </div>
 
-<a href="{% url 'produit:liste_categories' %}" class="btn btn-secondary">Retour a la liste</a>
+<a href="{% url 'produit:liste_categories' %}" class="cat-back-btn">&#8592; Retour aux catégories</a>
 {% endblock %}

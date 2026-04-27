@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 
+{% block extra_head %}
+<style>
+    header.fixed.top-0 { display: none !important; }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="row g-4">
     <div class="col-md-5">
@@ -18,9 +24,7 @@
         <p>{{ produit.description }}</p>
 
         <div class="d-flex gap-2 mt-3">
-            <a href="{% url 'produit:modifier_produit' produit.id %}" class="btn btn-warning">Modifier</a>
-            <a href="{% url 'produit:supprimer_produit' produit.id %}" class="btn btn-danger">Supprimer</a>
-            <a href="{% url 'produit:liste_produits' %}" class="btn btn-secondary">Retour</a>
+            <a href="{% url 'produit:liste_produits' %}" class="btn btn-secondary">&#8592; MonShop</a>
         </div>
     </div>
 </div>

@@ -27,13 +27,18 @@ def liste_produits(request):
         'categories': categories,
         'query': query,
         'categorie_id': categorie_id,
+        'hide_nav': True,
     }
     return render(request, 'produit/produits.html', context)
 
 
 def detail_produit(request, produit_id):
     produit = get_object_or_404(Produit.objects.select_related('categorie'), id=produit_id)
-    return render(request, 'produit/produit_detail.html', {'produit': produit})
+    context = {
+        'produit': produit,
+        'hide_nav': True,
+    }
+    return render(request, 'produit/produit_detail.html', context)
 
 
 @admin_required
@@ -88,10 +93,12 @@ def liste_categories(request):
 def detail_categorie(request, categorie_id):
     categorie = get_object_or_404(Categorie, id=categorie_id)
     produits = Produit.objects.filter(categorie=categorie).order_by('nom')
-    return render(request, 'produit/categorie_detail.html', {
+    context = {
         'categorie': categorie,
         'produits': produits,
-    })
+        'hide_nav': True,
+    }
+    return render(request, 'produit/categorie_detail.html', context)
 
 
 @admin_required

@@ -95,6 +95,14 @@ def user_home(request):
     categories = Categorie.objects.order_by('nom')[:6]
     featured_product = produits_recommandes[0] if produits_recommandes else None
 
+    # Nombre d'articles dans le panier
+    from panier.models import Panier, ArticlePanier
+    panier_count = 0
+    if request.user.is_authenticated:
+        panier = Panier.objects.filter(utilisateur=request.user).first()
+        if panier:
+            panier_count = ArticlePanier.objects.filter(panier=panier).aggregate(models.Sum('quantite'))['quantite__sum'] or 0
+
     return render(request, 'home.html', {
         'produits': produits_recommandes,
         'categories': categories,
@@ -102,4 +110,5 @@ def user_home(request):
         'produits_favoris': produits_favoris,
         'hide_nav': True,
         'full_layout': True,
+        'panier_count': panier_count,
     })

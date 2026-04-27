@@ -9,19 +9,19 @@
         theme: {
             extend: {
                 colors: {
-                    'surface-container-highest': '#e9e1df',
-                    'surface-bright': '#fff8f6',
-                    'surface-container': '#f4ecea',
-                    'surface-container-low': '#faf2f0',
-                    'surface-container-high': '#eee6e5',
-                    'outline-variant': '#d4c2c2',
-                    primary: '#7b5455',
-                    'primary-container': '#d4a5a5',
-                    secondary: '#5f5e5e',
-                    surface: '#fff8f6',
-                    'on-surface': '#1e1b1a',
-                    'on-surface-variant': '#504444',
-                    'on-primary': '#ffffff'
+                    'surface-container-highest': '#f7e9f0',
+                    'surface-bright': '#fff6fa',
+                    'surface-container': '#fbeaf3',
+                    'surface-container-low': '#f9e3ef',
+                    'surface-container-high': '#f3e1e7',
+                    'outline-variant': '#e9b6c1',
+                    primary: '#bfa2db',
+                    'primary-container': '#e9b6c1',
+                    secondary: '#a07a78',
+                    surface: '#fff6fa',
+                    'on-surface': '#7b5455',
+                    'on-surface-variant': '#a07a78',
+                    'on-primary': '#fff',
                 },
                 fontFamily: {
                     headline: ['Noto Serif', 'serif'],
@@ -68,9 +68,12 @@
         <a href="/produits/" class="text-primary hover:opacity-80 transition-opacity">
             <span class="material-symbols-outlined">storefront</span>
         </a>
-        <h1 class="noto-serif text-sm md:text-lg font-bold tracking-[0.2em] text-primary uppercase">ATELIER SILK</h1>
-        <a href="/panier/" class="text-primary hover:opacity-80 transition-opacity">
+        <h1 class="noto-serif text-sm md:text-lg font-bold tracking-[0.2em] text-primary uppercase">CosméBeauty</h1>
+        <a href="/panier/" class="relative text-primary hover:opacity-80 transition-opacity">
             <span class="material-symbols-outlined">shopping_bag</span>
+            {% if panier_count and panier_count > 0 %}
+            <span style="position:absolute;top:-8px;right:-8px;background:#e9b6c1;color:#fff;font-size:0.8rem;font-weight:bold;padding:2px 7px;border-radius:999px;min-width:22px;text-align:center;box-shadow:0 2px 8px #e9b6c133;">+{{ panier_count }}</span>
+            {% endif %}
         </a>
     </header>
 

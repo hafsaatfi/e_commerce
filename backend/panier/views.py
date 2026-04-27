@@ -20,7 +20,7 @@ def ajouter_au_panier(request, produit_id):
     article.quantite = quantite
     article.save()
 
-    return redirect('panier')
+    return redirect('panier:panier')
 @login_required
 def voir_panier(request):
     panier, created = Panier.objects.get_or_create(utilisateur=request.user)
@@ -51,4 +51,4 @@ def modifier_quantite(request, article_id):
 def supprimer_article(request, article_id):
     article = get_object_or_404(ArticlePanier, id=article_id)
     article.delete()
-    return redirect('panier')
+    return redirect('panier:panier')

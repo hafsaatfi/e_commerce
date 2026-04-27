@@ -1,4 +1,18 @@
+
 {% extends 'base.html' %}
+{% block extra_head %}
+<style>
+    header.fixed.top-0 { display: none !important; }
+</style>
+{% endblock %}
+
+<div class="shop-title" style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px;">
+    <span style="font-size:2.2rem; color:#e9b6c1; vertical-align:middle;">
+        <!-- Icône cosmétique (ex: flacon de parfum, FontAwesome ou SVG) -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 24 24"><path fill="#e9b6c1" d="M12 2c.552 0 1 .448 1 1v1.382c2.28.464 4 2.484 4 4.868V10h1c.552 0 1 .448 1 1v9c0 1.105-.895 2-2 2H7c-1.105 0-2-.895-2-2v-9c0-.552.448-1 1-1h1V9.25c0-2.384 1.72-4.404 4-4.868V3c0-.552.448-1 1-1Zm0 2.5c-1.93 0-3.5 1.57-3.5 3.5V10h7V8c0-1.93-1.57-3.5-3.5-3.5ZM7 11v9h10v-9H7Zm5 2a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"/></svg>
+    </span>
+    <span>MonShop</span>
+</div>
 
 {% block content %}
 <style>
@@ -121,7 +135,6 @@
     }
 </style>
 
-<div class="shop-title">MonShop</div>
 <form method="get" class="shop-filters">
     <input type="text" name="q" value="{{ query }}" placeholder="Rechercher un produit...">
     <select name="categorie">
@@ -151,6 +164,13 @@
             <div class="shop-card-stock">Stock: {{ produit.stock }}</div>
             <div class="shop-card-actions">
                 <a href="{% url 'produit:detail_produit' produit.id %}">Détail</a>
+                <form method="post" action="{% url 'panier:ajouter_au_panier' produit.id %}" style="display:inline; margin:0; padding:0;">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantite" value="1">
+                    <button type="submit" style="background: linear-gradient(90deg, #bfa2db 0%, #e9b6c1 100%); color: #fff; border: none; border-radius: 8px; padding: 7px 18px; font-weight: 600; font-size: 0.98rem; cursor: pointer; margin-left: 6px;">
+                        Ajouter au panier
+                    </button>
+                </form>
                 {% if user.is_authenticated and user.is_staff or user.role == 'admin' %}
                     <a href="{% url 'produit:modifier_produit' produit.id %}" style="background:#f7d6e0;color:#7b5455;">Modifier</a>
                     <a href="{% url 'produit:supprimer_produit' produit.id %}" style="background:#ffe0e0;color:#b71c1c;">Supprimer</a>
