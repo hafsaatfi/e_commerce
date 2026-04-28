@@ -1,0 +1,349 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    :root {
+        --checkout-bg: #f3f3ef;
+        --checkout-card: #ffffff;
+        --checkout-border: #ddddd6;
+        --checkout-border-strong: #cbcbc3;
+        --checkout-text: #171717;
+        --checkout-muted: #666666;
+    }
+
+    .checkout-shell {
+        font-family: 'Manrope', 'Poppins', sans-serif;
+        border: 1px solid var(--checkout-border);
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff 0%, #fbfbf9 100%);
+        overflow: hidden;
+        box-shadow: 0 24px 60px rgba(18, 18, 18, 0.08);
+    }
+
+    .left-panel {
+        border-right: 1px solid #e7e7e1;
+        background:
+            radial-gradient(circle at 12% 12%, rgba(0, 0, 0, 0.035), transparent 42%),
+            linear-gradient(160deg, #f6f6f2 0%, #fbfbf7 100%);
+        padding: 2.4rem;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .right-panel {
+        padding: 2.4rem;
+        background: var(--checkout-card);
+    }
+
+    .eyebrow {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: #6f6f6f;
+        margin-bottom: 0.6rem;
+        font-weight: 700;
+    }
+
+    .title {
+        font-size: clamp(1.7rem, 2.5vw, 2.25rem);
+        font-weight: 700;
+        color: var(--checkout-text);
+        margin-bottom: 1rem;
+        line-height: 1.18;
+        max-width: 16ch;
+    }
+
+    .muted {
+        color: #626262;
+        font-size: 0.96rem;
+        line-height: 1.65;
+        max-width: 36ch;
+    }
+
+    .meta-grid {
+        margin-top: 1.9rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.72rem;
+    }
+
+    .meta-item {
+        border: 1px solid #e2e2dc;
+        border-radius: 10px;
+        padding: 0.82rem 0.9rem;
+        font-size: 0.84rem;
+        color: #3f3f3f;
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .left-footnote {
+        margin-top: 2rem;
+        font-size: 0.79rem;
+        color: #6f6f6f;
+        border-top: 1px solid #e6e6e1;
+        padding-top: 1rem;
+    }
+
+    .version-tag {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 0.8rem;
+        padding: 4px 9px;
+        border: 1px solid #dbdbd5;
+        border-radius: 999px;
+        font-size: 11px;
+        color: #666666;
+        background: #ffffff;
+    }
+
+    .form-wrap {
+        border: 1px solid #e3e3dd;
+        border-radius: 16px;
+        background: #ffffff;
+        padding: 1.25rem;
+    }
+
+    .section-title {
+        font-size: 1.08rem;
+        font-weight: 700;
+        color: var(--checkout-text);
+        margin-bottom: 0.35rem;
+    }
+
+    .section-note {
+        color: #727272;
+        font-size: 0.87rem;
+        margin-bottom: 1.15rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.95rem;
+    }
+
+    .span-2 {
+        grid-column: span 2;
+    }
+
+    .input-block {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-label {
+        font-size: 0.73rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: #616161;
+        font-weight: 700;
+        margin-bottom: 0.42rem;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 10px;
+        border: 1px solid var(--checkout-border);
+        background: #fff;
+        padding-top: 0.78rem;
+        padding-bottom: 0.78rem;
+        font-size: 0.92rem;
+        color: var(--checkout-text);
+        transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--checkout-border-strong);
+        box-shadow: 0 0 0 3px rgba(32, 32, 32, 0.08);
+    }
+
+    textarea.form-control {
+        min-height: 90px;
+        resize: vertical;
+    }
+
+    .field-help {
+        color: #7c7c7c;
+        font-size: 0.78rem;
+        margin-top: 0.35rem;
+    }
+
+    .submit-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1.3rem;
+        padding-top: 1.15rem;
+        border-top: 1px solid #e7e7e3;
+    }
+
+    .small-tip {
+        font-size: 0.8rem;
+        color: #6f6f6f;
+    }
+
+    .submit-btn {
+        background: #111111;
+        border: 1px solid #111111;
+        color: #ffffff;
+        border-radius: 10px;
+        padding: 0.86rem 1.45rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        min-width: 230px;
+        transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .submit-btn:hover {
+        background: #000000;
+        color: #ffffff;
+        border-color: #000000;
+        transform: translateY(-1px);
+        box-shadow: 0 12px 26px rgba(17, 17, 17, 0.2);
+    }
+
+    @media (max-width: 991px) {
+        .left-panel {
+            border-right: 0;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .span-2 {
+            grid-column: span 1;
+        }
+
+        .right-panel,
+        .left-panel {
+            padding: 1.4rem;
+        }
+
+        .checkout-shell {
+            border-radius: 16px;
+        }
+
+        .submit-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .submit-btn {
+            width: 100%;
+            min-width: 0;
+        }
+    }
+</style>
+
+<div class="checkout-shell">
+    <div class="row g-0 align-items-stretch">
+        <div class="col-lg-5">
+            <div class="left-panel h-100">
+                <div>
+                    <p class="eyebrow">Skincare Order</p>
+                    <h1 class="title">Valide ta commande skincare.</h1>
+                    <p class="muted mb-0">Un formulaire clair, rapide et premium pour finaliser la livraison de tes soins.</p>
+
+                    <div class="meta-grid">
+                        <div class="meta-item">Nom, téléphone, email</div>
+                        <div class="meta-item">Adresse, ville, quartier</div>
+                        <div class="meta-item">Type et problème de peau</div>
+                        <div class="meta-item">Choix de livraison</div>
+                    </div>
+                </div>
+
+                <div class="left-footnote">
+                    Conseil skincare: complete bien le type de peau pour recevoir des recommandations mieux adaptees.
+                    <div class="version-tag">Checkout v2.1</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="right-panel">
+                <p class="eyebrow mb-1">Client form</p>
+                <h2 class="section-title mb-2">Complète ta commande</h2>
+                <p class="section-note">Renseigne les informations client, la livraison et les details skincare pour valider ta commande.</p>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <div class="form-wrap">
+                        <div class="form-grid">
+                            <div class="input-block">
+                            <label class="form-label">{{ form.full_name.label }}</label>
+                            {{ form.full_name }}
+                            {% if form.full_name.errors %}<div class="text-danger small mt-1">{{ form.full_name.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="input-block">
+                            <label class="form-label">{{ form.phone.label }}</label>
+                            {{ form.phone }}
+                            {% if form.phone.errors %}<div class="text-danger small mt-1">{{ form.phone.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="input-block span-2">
+                            <label class="form-label">{{ form.email.label }}</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="input-block span-2">
+                            <label class="form-label">{{ form.address.label }}</label>
+                            {{ form.address }}
+                            {% if form.address.errors %}<div class="text-danger small mt-1">{{ form.address.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="input-block">
+                            <label class="form-label">{{ form.ville.label }}</label>
+                            {{ form.ville }}
+                            {% if form.ville.errors %}<div class="text-danger small mt-1">{{ form.ville.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="input-block">
+                            <label class="form-label">{{ form.quartier.label }}</label>
+                            {{ form.quartier }}
+                            {% if form.quartier.errors %}<div class="text-danger small mt-1">{{ form.quartier.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="input-block">
+                            <label class="form-label">{{ form.skin_type.label }}</label>
+                            {{ form.skin_type }}
+                            <div class="field-help mt-1">Pour personnaliser ta routine.</div>
+                            {% if form.skin_type.errors %}<div class="text-danger small mt-1">{{ form.skin_type.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="input-block">
+                            <label class="form-label">{{ form.delivery_method.label }}</label>
+                            {{ form.delivery_method }}
+                            <div class="field-help mt-1">Choisis la livraison qui te convient.</div>
+                            {% if form.delivery_method.errors %}<div class="text-danger small mt-1">{{ form.delivery_method.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="input-block span-2">
+                            <label class="form-label">{{ form.skin_problem.label }}</label>
+                            {{ form.skin_problem }}
+                            {% if form.skin_problem.errors %}<div class="text-danger small mt-1">{{ form.skin_problem.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="input-block span-2">
+                            <label class="form-label">{{ form.note.label }}</label>
+                            {{ form.note }}
+                            {% if form.note.errors %}<div class="text-danger small mt-1">{{ form.note.errors|striptags }}</div>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-row">
+                        <span class="small-tip">Commande skincare securisee et verifiee avant expedition.</span>
+                        <button type="submit" class="submit-btn">Valider la commande</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

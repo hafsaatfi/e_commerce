@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    .track-card {
+        font-family: 'Manrope', 'Poppins', sans-serif;
+        background: #ffffff;
+        border: 1px solid #d9d9d4;
+        border-radius: 22px;
+        box-shadow: 0 20px 55px rgba(18, 18, 18, 0.08);
+        overflow: hidden;
+    }
+
+    .track-hero {
+        background: linear-gradient(180deg, #f8f8f5 0%, #f1f1ed 100%);
+        color: #151515;
+        border-bottom: 1px solid #e3e3de;
+        padding: 30px;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: #ebebe8;
+        color: #545454;
+        border: 1px solid #dfdfda;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .info-box {
+        background: #fcfcfa;
+        border: 1px solid #e5e5df;
+        border-radius: 12px;
+        padding: 20px;
+    }
+
+    .mini-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: .14em;
+        color: #737373;
+        font-weight: 700;
+    }
+
+    .action-btn {
+        border-radius: 10px;
+        padding: 0.82rem 1.35rem;
+        font-weight: 700;
+    }
+
+    @media (max-width: 991px) {
+        .track-card {
+            border-radius: 16px;
+        }
+    }
+</style>
+
+<div class="track-card">
+    <div class="track-hero">
+        <div class="status-badge mb-3">Suivi de commande</div>
+        <h1 class="h2 fw-bold mb-2">Suivi simple et clair de ta commande</h1>
+        <p class="mb-0 text-muted">Retrouve ici la dernière commande enregistrée et son état actuel.</p>
+    </div>
+
+    <div class="p-4 p-md-5">
+        {% if commande %}
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="info-box h-100">
+                    <p class="mini-label mb-1">Dernière commande</p>
+                    <h2 class="h4 mb-3">Commande #{{ commande.commande_id }}</h2>
+                    <p class="mb-2"><strong>Statut:</strong> {{ commande.status }}</p>
+                    <p class="mb-2"><strong>Total:</strong> {{ commande.total }} DH</p>
+                    <p class="mb-0"><strong>Date:</strong> {{ commande.date_creation|date:"d/m/Y H:i" }}</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="info-box">
+                    <p class="mini-label mb-1">Livraison</p>
+                    <h3 class="h6 mb-2">{{ commande.delivery_method_label }}</h3>
+                    <p class="mb-0 text-muted small">Adresse: {{ commande.address }}</p>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-light border mb-0">Aucune commande récente n'est disponible pour le moment.</div>
+        {% endif %}
+
+        <div class="d-flex gap-2 flex-wrap mt-4">
+            <a href="/commande/historique/" class="btn btn-dark action-btn">Voir l'historique</a>
+            <a href="/produits/" class="btn btn-outline-secondary action-btn">Continuer les achats</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

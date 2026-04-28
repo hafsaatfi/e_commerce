@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    .history-card {
+        font-family: 'Manrope', 'Poppins', sans-serif;
+        background: #ffffff;
+        border: 1px solid #d9d9d4;
+        border-radius: 22px;
+        box-shadow: 0 20px 55px rgba(18, 18, 18, 0.08);
+        overflow: hidden;
+    }
+
+    .history-hero {
+        background: linear-gradient(180deg, #f8f8f5 0%, #f1f1ed 100%);
+        color: #151515;
+        border-bottom: 1px solid #e3e3de;
+        padding: 30px;
+    }
+
+    .order-card {
+        border: 1px solid #e5e5df;
+        border-radius: 12px;
+        background: #fcfcfa;
+        padding: 20px;
+    }
+
+    .history-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: #ebebe8;
+        color: #545454;
+        border: 1px solid #dfdfda;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .mini-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: .14em;
+        color: #737373;
+        font-weight: 700;
+    }
+
+    .product-chip {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #dfdfd9;
+        background: #ffffff;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        color: #454545;
+    }
+
+    .action-btn {
+        border-radius: 10px;
+        padding: 0.82rem 1.35rem;
+        font-weight: 700;
+    }
+
+    @media (max-width: 991px) {
+        .history-card {
+            border-radius: 16px;
+        }
+    }
+</style>
+
+<div class="history-card">
+    <div class="history-hero">
+        <div class="history-chip mb-3">Historique commandes</div>
+        <h1 class="h2 fw-bold mb-2">Toutes tes commandes au même endroit</h1>
+        <p class="mb-0 text-muted">Consulte rapidement tes achats passés, leurs montants et leurs informations de livraison.</p>
+    </div>
+
+    <div class="p-4 p-md-5">
+        {% if commandes %}
+            <div class="d-grid gap-3">
+                {% for commande in commandes %}
+                    <div class="order-card">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+                            <div>
+                                <p class="mini-label mb-1">Commande #{{ commande.commande_id }}</p>
+                                <h2 class="h5 mb-0">{{ commande.date_creation|date:"d/m/Y H:i" }}</h2>
+                            </div>
+                            <span class="history-chip">{{ commande.status }}</span>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <p class="mb-1 text-muted small">Total</p>
+                                <div class="fw-bold">{{ commande.total }} DH</div>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-1 text-muted small">Livraison</p>
+                                <div class="fw-bold">{{ commande.delivery_method_label }}</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <p class="mb-2 text-muted small">Produits</p>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for item in commande.articles %}
+                                    <span class="product-chip">{{ item.nom }} × {{ item.quantite }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-light border mb-0">Aucune commande passée pour le moment.</div>
+        {% endif %}
+
+        <div class="d-flex gap-2 flex-wrap mt-4">
+            <a href="/commande/suivi/" class="btn btn-dark action-btn">Retour au suivi</a>
+            <a href="/produits/" class="btn btn-outline-secondary action-btn">Explorer les produits</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    .confirm-card {
+        font-family: 'Manrope', 'Poppins', sans-serif;
+        background: #ffffff;
+        border-radius: 22px;
+        border: 1px solid #d9d9d4;
+        overflow: hidden;
+        box-shadow: 0 20px 55px rgba(18, 18, 18, 0.08);
+    }
+
+    .confirm-hero {
+        background: linear-gradient(180deg, #f8f8f5 0%, #f1f1ed 100%);
+        color: #151515;
+        border-bottom: 1px solid #e3e3de;
+        padding: 30px;
+    }
+
+    .pill,
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .pill {
+        background: #ebebe8;
+        color: #545454;
+        border: 1px solid #dfdfda;
+    }
+
+    .status-pill {
+        background: #f0efec;
+        color: #444444;
+        border: 1px solid #e1e1dd;
+    }
+
+    .detail-box {
+        background: #fcfcfa;
+        border: 1px solid #e5e5df;
+        border-radius: 12px;
+        padding: 20px;
+        height: 100%;
+    }
+
+    .order-line {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #e8e8e8;
+    }
+
+    .order-line:last-child {
+        border-bottom: 0;
+    }
+
+    .mini-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: .14em;
+        color: #737373;
+        font-weight: 700;
+    }
+
+    @media (max-width: 991px) {
+        .confirm-card {
+            border-radius: 16px;
+        }
+    }
+</style>
+
+<div class="confirm-card">
+    <div class="confirm-hero">
+        <div class="pill mb-3">Commande confirmée</div>
+        <h1 class="display-6 fw-bold mb-2">Merci pour ta commande</h1>
+        <p class="mb-0 text-muted">Ta commande a été enregistrée avec succès. Voici le récapitulatif de ton achat.</p>
+    </div>
+
+    <div class="p-4 p-md-5">
+        {% if commande %}
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="detail-box mb-4">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+                        <div>
+                            <p class="mini-label mb-1">Résumé des produits</p>
+                            <h2 class="h5 mb-0">Commande #{{ commande.commande_id }}</h2>
+                        </div>
+                        <span class="status-pill">{{ commande.status }}</span>
+                    </div>
+                    {% for item in commande.articles %}
+                        <div class="order-line">
+                            <div>
+                                <div class="fw-semibold">{{ item.nom }}</div>
+                                <div class="text-muted small">Quantité: {{ item.quantite }}</div>
+                            </div>
+                            <div class="fw-bold">{{ item.sous_total }} DH</div>
+                        </div>
+                    {% endfor %}
+                    <div class="d-flex justify-content-between align-items-center pt-3 mt-2 border-top">
+                        <span class="fw-semibold">Total payé</span>
+                        <span class="fs-4 fw-bold text-success">{{ commande.total }} DH</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="detail-box mb-4">
+                    <h2 class="h5 mb-3">Client</h2>
+                    <p class="mb-2"><strong>Commande #:</strong> {{ commande.commande_id }}</p>
+                    <p class="mb-2"><strong>Nom:</strong> {{ commande.full_name }}</p>
+                    <p class="mb-2"><strong>Téléphone:</strong> {{ commande.phone }}</p>
+                    <p class="mb-2"><strong>Email:</strong> {{ commande.email }}</p>
+                    <p class="mb-0"><strong>Adresse:</strong> {{ commande.address }}, {{ commande.quartier }}, {{ commande.ville }}</p>
+                </div>
+
+                <div class="detail-box mb-4">
+                    <h2 class="h5 mb-3">Livraison & peau</h2>
+                    <p class="mb-2"><strong>Type de peau:</strong> {{ commande.skin_type_label }}</p>
+                    <p class="mb-2"><strong>Problème de peau:</strong> {{ commande.skin_problem|default:'-' }}</p>
+                    <p class="mb-0"><strong>Livraison:</strong> {{ commande.delivery_method_label }}</p>
+                </div>
+
+                {% if commande.note %}
+                <div class="detail-box">
+                    <h2 class="h5 mb-3">Note</h2>
+                    <p class="mb-0 text-muted">{{ commande.note }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-warning mb-0">Aucune commande récente à afficher.</div>
+        {% endif %}
+
+        <div class="d-flex gap-2 flex-wrap mt-4">
+            <a href="/produits/" class="btn btn-dark rounded-0 px-4 py-3">Continuer les achats</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
