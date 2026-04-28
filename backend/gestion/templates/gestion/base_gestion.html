@@ -9,18 +9,18 @@
         theme: {
             extend: {
                 colors: {
-                    primary: '#7b5455',
-                    'primary-container': '#d4a5a5',
-                    surface: '#fff8f6',
-                    'surface-bright': '#fff8f6',
-                    'surface-container': '#f4ecea',
-                    'surface-container-low': '#faf2f0',
-                    'surface-container-high': '#eee6e5',
-                    'surface-container-highest': '#e9e1df',
-                    'outline-variant': '#d4c2c2',
-                    'on-surface': '#1e1b1a',
-                    'on-surface-variant': '#504444',
-                    'on-primary': '#ffffff',
+                    primary: '#e75480', // rose vif
+                    'primary-container': '#f8bbd0', // rose clair
+                    surface: '#fff0f6', // fond rose très pâle
+                    'surface-bright': '#fff0f6',
+                    'surface-container': '#fce4ec', // rose pâle
+                    'surface-container-low': '#f8bbd0', // rose clair
+                    'surface-container-high': '#f3c6e8', // lavande pâle
+                    'surface-container-highest': '#f8bbd0',
+                    'outline-variant': '#e1bee7', // violet pâle
+                    'on-surface': '#6a1b9a', // violet foncé
+                    'on-surface-variant': '#ad1457', // rose foncé
+                    'on-primary': '#fff',
                     error: '#ba1a1a',
                 },
                 fontFamily: {
@@ -32,7 +32,7 @@
     };
 </script>
 <style>
-    body { font-family: 'Manrope', sans-serif; background: #fff8f6; color: #1e1b1a; }
+    body { font-family: 'Manrope', sans-serif; background: #fff0f6; color: #6a1b9a; }
     .noto-serif { font-family: 'Noto Serif', serif; }
     .material-symbols-outlined {
         font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 24;
@@ -49,7 +49,7 @@
 <div class="min-h-screen flex overflow-hidden bg-surface text-on-surface">
     <aside class="hidden lg:flex flex-col w-72 bg-surface-container border-r border-outline-variant/40 h-screen sticky top-0">
         <div class="p-8">
-            <h1 class="noto-serif text-2xl font-bold tracking-[0.15em] text-primary">CosméBeauty</h1>
+            <h1 class="noto-serif text-2xl font-bold tracking-[0.15em] bg-gradient-to-r from-pink-500 via-pink-300 to-fuchsia-400 bg-clip-text text-transparent drop-shadow-lg">CosméBeauty</h1>
             <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mt-1 opacity-60">Admin Console</p>
         </div>
         <nav class="flex-grow px-4 space-y-2 overflow-y-auto">
@@ -93,7 +93,7 @@
                 <h2 class="noto-serif text-2xl font-bold text-pink-800">{% block gestion_title %}Espace administrateur{% endblock %}</h2>
                 <p class="text-xs text-pink-600">Gestion élégante et féminine de votre plateforme</p>
             </div>
-            <a href="{% url 'gestion:entity_create' 'produits' %}" class="hidden md:inline-flex items-center gap-2 bg-primary px-4 py-2 rounded-full text-on-primary text-[11px] font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-md shadow-primary/10">
+            <a href="{% url 'gestion:entity_create' 'produits' %}" class="hidden md:inline-flex items-center gap-2 bg-gradient-to-r from-pink-500 via-pink-300 to-fuchsia-400 px-4 py-2 rounded-full text-white text-[11px] font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-md shadow-pink-200/10">
                 <span class="material-symbols-outlined text-sm">add</span>
                 <span>Nouveau produit</span>
             </a>
@@ -120,7 +120,7 @@
         <span class="material-symbols-outlined">inventory_2</span>
         <span class="text-[10px] font-medium">Produits</span>
     </a>
-    <a class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-full px-5 py-1 scale-110 shadow-lg" href="{% url 'gestion:entity_create' 'produits' %}">
+    <a class="flex flex-col items-center justify-center rounded-full px-5 py-1 scale-110 shadow-lg bg-gradient-to-r from-pink-500 via-pink-300 to-fuchsia-400 text-white hover:brightness-110 transition-all" href="{% url 'gestion:entity_create' 'produits' %}">
         <span class="material-symbols-outlined">add</span>
     </a>
     <a class="flex flex-col items-center justify-center {% if entity == 'commandes' or entity == 'articles-commandes' %}text-primary{% else %}text-on-surface-variant{% endif %}" href="{% url 'gestion:entity_list' 'commandes' %}">

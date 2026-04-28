@@ -11,7 +11,7 @@
     <form method="post" class="mt-6">
         {% csrf_token %}
         <div class="flex gap-2">
-            <button type="submit" class="px-4 py-2 rounded-xl bg-red-600 text-white text-xs font-bold uppercase tracking-widest">Oui, supprimer</button>
+            <button type="submit" class="px-4 py-2 rounded-xl bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold uppercase tracking-widest shadow-md shadow-pink-200/40 transition-all">Oui, supprimer</button>
             <a href="{% url 'gestion:entity_detail' entity object.pk %}" class="px-4 py-2 rounded-xl border border-outline-variant/40 text-xs font-bold uppercase tracking-widest">Annuler</a>
         </div>
     </form>
