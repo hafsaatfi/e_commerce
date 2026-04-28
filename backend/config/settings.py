@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -81,16 +82,26 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ecommerce_db2',
-        'USER': 'root',
-        'PASSWORD': '',  # mets ton mot de passe si tu en as un
-        'HOST': 'localhost',
-        'PORT': '3306',
+USE_MYSQL = os.getenv('DJANGO_USE_MYSQL', '').lower() in {'1', 'true', 'yes', 'on'}
+
+if USE_MYSQL:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('DJANGO_DB_NAME', 'ecommerce_db2'),
+            'USER': os.getenv('DJANGO_DB_USER', 'root'),
+            'PASSWORD': os.getenv('DJANGO_DB_PASSWORD', ''),
+            'HOST': os.getenv('DJANGO_DB_HOST', 'localhost'),
+            'PORT': os.getenv('DJANGO_DB_PORT', '3306'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
