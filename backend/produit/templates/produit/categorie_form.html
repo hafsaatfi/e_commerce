@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="mb-4">{{ titre }}</h3>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn" style="background: linear-gradient(90deg, #e75480 0%, #f8bbd0 100%); color: #fff; border: none; border-radius: 8px; padding: 7px 18px; font-weight: 600; font-size: 0.98rem; cursor: pointer; box-shadow: 0 2px 8px #f8bbd0;">{{ texte_bouton }}</button>
+                        <a href="{% url 'produit:liste_categories' %}" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -15,22 +15,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.views.generic import RedirectView
 from django.urls import include, path
 
 from panier.views import ajouter_au_panier
 from commande.views import confirmation
-from users.views import login_view, register_view
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/chatbot/', permanent=False)),
-    path('login/', login_view, name='login'),
-    path('register/', register_view, name='register'),
+    path('', RedirectView.as_view(url='/users/login/', permanent=False), name='root-login'),
     path('admin/', admin.site.urls),
+    path('logout/', LogoutView.as_view(), name='logout'),
 
     path('users/', include('users.urls')),
+    path('gestion/', include('gestion.urls')),
     path('produits/', include('produit.urls')),
-    path('panier/', include('panier.urls')),
+    path('panier/', include(('panier.urls', 'panier'), namespace='panier')),
     path('commande/', include('commande.urls')),
     path('avis/', include('avis.urls')),
     path('chatbot/', include('chatbot.urls')),

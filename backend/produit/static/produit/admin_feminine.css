@@ -1,0 +1,86 @@
+/* admin_feminine.css : Couleurs douces et féminines */
+
+:root {
+    --admin-bg: #fff8f6;
+    --admin-primary: #e9b6c1;
+    --admin-secondary: #f7d6e0;
+    --admin-accent: #bfa2db;
+    --admin-text: #7b5455;
+    --admin-link: #a07a78;
+    --admin-border: #f3e1e7;
+}
+
+body, .dashboard, .module, .grp-module, .grp-group {
+    background: var(--admin-bg) !important;
+    color: var(--admin-text) !important;
+}
+
+#header, .module caption, .grp-module caption, .grp-group h2, .grp-group h3 {
+    background: var(--admin-primary) !important;
+    color: #fff !important;
+}
+
+#user-tools, .grp-user-tools {
+    background: var(--admin-secondary) !important;
+    color: var(--admin-text) !important;
+}
+
+a, .grp-navigation a, .grp-navigation a:visited {
+    color: var(--admin-link) !important;
+}
+
+a:hover, .grp-navigation a:hover {
+    color: var(--admin-accent) !important;
+}
+
+input, select, textarea, .vTextField, .vLargeTextField, .vDateField, .vTimeField {
+    background: #fff !important;
+    border: 1px solid var(--admin-border) !important;
+    color: var(--admin-text) !important;
+    border-radius: 6px !important;
+}
+
+.button, input[type=submit], input[type=button], .default, .grp-button {
+    background: var(--admin-primary) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px #e9b6c133;
+    transition: background 0.2s;
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover, .default:hover, .grp-button:hover {
+    background: var(--admin-accent) !important;
+}
+
+#content-main, .grp-content {
+    background: #fff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 16px #e9b6c122;
+    padding: 24px !important;
+}
+
+/* Titres et séparateurs */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--admin-text) !important;
+    font-family: 'Noto Serif', serif;
+}
+
+/* Table header */
+th {
+    background: var(--admin-secondary) !important;
+    color: var(--admin-text) !important;
+}
+
+/* Liens de navigation */
+#nav-sidebar, .grp-nav-sidebar {
+    background: var(--admin-secondary) !important;
+    border-radius: 0 0 12px 12px !important;
+}
+
+/* Messages */
+.messagelist, .grp-messagelist {
+    background: var(--admin-accent) !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+}

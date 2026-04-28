@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-body">
+                <h4 class="text-danger">Confirmer la suppression</h4>
+                <p>Voulez-vous vraiment supprimer la categorie <strong>{{ categorie.nom }}</strong> ?</p>
+                <p class="text-muted mb-4">Attention: la suppression echouera si des produits sont encore lies a cette categorie.</p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger">Oui, supprimer</button>
+                        <a href="{% url 'produit:detail_categorie' categorie.id %}" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

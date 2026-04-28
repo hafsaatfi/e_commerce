@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<style>
+    header.fixed.top-0 { display: none !important; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-md-5">
+        {% if produit.image %}
+            <img src="{{ produit.image.url }}" class="img-fluid rounded" alt="{{ produit.nom }}">
+        {% else %}
+            <div class="border rounded p-5 text-center text-muted">Aucune image</div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-7">
+        <h2>{{ produit.nom }}</h2>
+        <p class="text-muted">Categorie: {{ produit.categorie.nom }}</p>
+        <p class="fs-4 fw-bold">{{ produit.prix }} DH</p>
+        <p>Stock disponible: {{ produit.stock }}</p>
+        <p>{{ produit.description }}</p>
+
+        <div class="d-flex gap-2 mt-3">
+            <a href="{% url 'produit:liste_produits' %}" class="btn btn-secondary">&#8592; MonShop</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

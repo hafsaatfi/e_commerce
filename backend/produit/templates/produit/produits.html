@@ -1,0 +1,184 @@
+
+{% extends 'base.html' %}
+{% block extra_head %}
+<style>
+    header.fixed.top-0 { display: none !important; }
+</style>
+{% endblock %}
+
+<div class="shop-title" style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px;">
+    <span style="font-size:2.2rem; color:#e9b6c1; vertical-align:middle;">
+        <!-- Icône cosmétique (ex: flacon de parfum, FontAwesome ou SVG) -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 24 24"><path fill="#e9b6c1" d="M12 2c.552 0 1 .448 1 1v1.382c2.28.464 4 2.484 4 4.868V10h1c.552 0 1 .448 1 1v9c0 1.105-.895 2-2 2H7c-1.105 0-2-.895-2-2v-9c0-.552.448-1 1-1h1V9.25c0-2.384 1.72-4.404 4-4.868V3c0-.552.448-1 1-1Zm0 2.5c-1.93 0-3.5 1.57-3.5 3.5V10h7V8c0-1.93-1.57-3.5-3.5-3.5ZM7 11v9h10v-9H7Zm5 2a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"/></svg>
+    </span>
+    <span>MonShop</span>
+</div>
+
+{% block content %}
+<style>
+    body {
+        background: #fff8f6;
+        font-family: 'Manrope', 'Segoe UI', Arial, sans-serif;
+    }
+    .shop-title {
+        font-family: 'Noto Serif', serif;
+        color: #bfa2db;
+        font-size: 2.5rem;
+        margin-bottom: 24px;
+        text-align: center;
+        letter-spacing: 0.04em;
+    }
+    .shop-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        justify-content: center;
+        margin-bottom: 32px;
+    }
+    .shop-filters input, .shop-filters select {
+        border-radius: 8px;
+        border: 1px solid #f3e1e7;
+        padding: 8px 14px;
+        font-size: 1rem;
+        background: #fff;
+        color: #7b5455;
+        min-width: 180px;
+    }
+    .shop-filters button {
+        background: linear-gradient(90deg, #e9b6c1 0%, #bfa2db 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 24px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .shop-filters button:hover {
+        background: linear-gradient(90deg, #bfa2db 0%, #e9b6c1 100%);
+    }
+    .shop-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+        gap: 28px;
+        margin-bottom: 32px;
+    }
+    .shop-card {
+        background: #f7e9f0;
+        border-radius: 16px;
+        box-shadow: 0 2px 16px #e9b6c122;
+        padding: 18px 18px 16px 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 420px;
+    }
+    .shop-card img {
+        width: 100%;
+        max-width: 220px;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 14px;
+        box-shadow: 0 2px 8px #e9b6c133;
+    }
+    .shop-card-title {
+        font-family: 'Noto Serif', serif;
+        color: #7b5455;
+        font-size: 1.2rem;
+        margin-bottom: 6px;
+        text-align: center;
+    }
+    .shop-card-cat {
+        color: #a07a78;
+        font-size: 0.98rem;
+        margin-bottom: 8px;
+    }
+    .shop-card-price {
+        color: #bfa2db;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+    .shop-card-stock {
+        color: #7b5455;
+        font-size: 0.98rem;
+        margin-bottom: 12px;
+    }
+    .shop-card-actions {
+        margin-top: auto;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+    .shop-card-actions a, .shop-card-actions button {
+        background: linear-gradient(90deg, #e9b6c1 0%, #bfa2db 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 7px 18px;
+        font-weight: 600;
+        font-size: 0.98rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+    .shop-card-actions a:hover, .shop-card-actions button:hover {
+        background: linear-gradient(90deg, #bfa2db 0%, #e9b6c1 100%);
+    }
+    .shop-empty {
+        text-align: center;
+        color: #a07a78;
+        font-size: 1.1rem;
+        margin: 40px 0;
+    }
+</style>
+
+<form method="get" class="shop-filters">
+    <input type="text" name="q" value="{{ query }}" placeholder="Rechercher un produit...">
+    <select name="categorie">
+        <option value="">Toutes les categories</option>
+        {% for cat in categories %}
+            <option value="{{ cat.id }}" {% if categorie_id == cat.id|stringformat:'s' %}selected{% endif %}>{{ cat.nom }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filtrer</button>
+</form>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="shop-grid">
+    {% for produit in produits %}
+        <div class="shop-card">
+            {% if produit.image %}
+                <img src="{{ produit.image.url }}" alt="{{ produit.nom }}">
+            {% endif %}
+            <div class="shop-card-title">{{ produit.nom }}</div>
+            <div class="shop-card-cat">Categorie: {{ produit.categorie.nom }}</div>
+            <div class="shop-card-price">{{ produit.prix }} DH</div>
+            <div class="shop-card-stock">Stock: {{ produit.stock }}</div>
+            <div class="shop-card-actions">
+                <a href="{% url 'produit:detail_produit' produit.id %}">Détail</a>
+                <form method="post" action="{% url 'panier:ajouter_au_panier' produit.id %}" style="display:inline; margin:0; padding:0;">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantite" value="1">
+                    <button type="submit" style="background: linear-gradient(90deg, #bfa2db 0%, #e9b6c1 100%); color: #fff; border: none; border-radius: 8px; padding: 7px 18px; font-weight: 600; font-size: 0.98rem; cursor: pointer; margin-left: 6px;">
+                        Ajouter au panier
+                    </button>
+                </form>
+                {% if user.is_authenticated and user.is_staff or user.role == 'admin' %}
+                    <a href="{% url 'produit:modifier_produit' produit.id %}" style="background:#f7d6e0;color:#7b5455;">Modifier</a>
+                    <a href="{% url 'produit:supprimer_produit' produit.id %}" style="background:#ffe0e0;color:#b71c1c;">Supprimer</a>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <div class="shop-empty">Aucun produit trouvé.</div>
+    {% endfor %}
+</div>
+{% endblock %}

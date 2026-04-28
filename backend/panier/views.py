@@ -1,12 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth.decorators import login_required
 from produit.models import Produit
 from .models import Panier, ArticlePanier
-
-from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from produit.models import Produit
-from .models import Panier, ArticlePanier
 
 @login_required
 def ajouter_au_panier(request, produit_id):
@@ -25,7 +20,7 @@ def ajouter_au_panier(request, produit_id):
     article.quantite = quantite
     article.save()
 
-    return redirect('panier')
+    return redirect('panier:panier')
 @login_required
 def voir_panier(request):
     panier, created = Panier.objects.get_or_create(utilisateur=request.user)
@@ -36,8 +31,24 @@ def voir_panier(request):
         'articles': articles,
         'total': total
     })
+
+@login_required
+def modifier_quantite(request, article_id):
+    article = get_object_or_404(ArticlePanier, id=article_id)
+    if request.method == 'POST':
+        try:
+            quantite = int(request.POST.get('quantite', 1))
+            if quantite > 0:
+                article.quantite = quantite
+                article.save()
+            else:
+                article.delete()
+        except (ValueError, TypeError):
+            pass
+    return redirect('panier')
+
 @login_required
 def supprimer_article(request, article_id):
     article = get_object_or_404(ArticlePanier, id=article_id)
     article.delete()
-    return redirect('panier')
+    return redirect('panier:panier')

@@ -1,0 +1,100 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_head %}
+<style>
+    header.fixed.top-0 { display: none !important; }
+    .cat-list-title {
+        font-family: 'Noto Serif', serif;
+        color: #bfa2db;
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 32px;
+        letter-spacing: 0.04em;
+    }
+    .cat-list-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 32px;
+        margin-bottom: 32px;
+    }
+    .cat-list-card {
+        background: #fff6fa;
+        border-radius: 22px;
+        box-shadow: 0 2px 16px #e9b6c122;
+        padding: 28px 24px 22px 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 260px;
+        border: none;
+        transition: box-shadow 0.2s;
+    }
+    .cat-list-card:hover {
+        box-shadow: 0 4px 24px #bfa2db33;
+    }
+    .cat-list-img {
+        max-height: 90px;
+        max-width: 140px;
+        border-radius: 16px;
+        box-shadow: 0 2px 12px #e9b6c133;
+        margin-bottom: 18px;
+    }
+    .cat-list-name {
+        font-family: 'Noto Serif', serif;
+        color: #a07a78;
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .cat-list-desc {
+        color: #7b5455;
+        font-size: 1.05rem;
+        text-align: center;
+        margin-bottom: 18px;
+    }
+    .cat-list-detail-btn {
+        background: linear-gradient(90deg, #bfa2db 0%, #e9b6c1 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 28px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: background 0.2s;
+        box-shadow: 0 2px 8px #e9b6c133;
+    }
+    .cat-list-detail-btn:hover {
+        background: linear-gradient(90deg, #e9b6c1 0%, #bfa2db 100%);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="cat-list-title">MonShop</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="cat-list-grid">
+    {% for categorie in categories %}
+        <div class="cat-list-card">
+            {% if categorie.image %}
+                <img src="{{ categorie.image.url }}" alt="Image de la catégorie" class="cat-list-img">
+            {% endif %}
+            <div class="cat-list-name">{{ categorie.nom }}</div>
+            <div class="cat-list-desc">{{ categorie.description|truncatewords:20 }}</div>
+            <a href="{% url 'produit:detail_categorie' categorie.id %}" class="cat-list-detail-btn">Voir la catégorie</a>
+        </div>
+    {% empty %}
+        <div class="cat-list-card text-muted">Aucune catégorie disponible.</div>
+    {% endfor %}
+</div>
+{% endblock %}

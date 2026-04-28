@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'gestion',
     'produit',
     'commande',
     'panier',
@@ -82,8 +83,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecommerce_db2',
+        'USER': 'root',
+        'PASSWORD': '',  # mets ton mot de passe si tu en as un
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
@@ -128,6 +133,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'users.Utilisateur'
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/users/login/'

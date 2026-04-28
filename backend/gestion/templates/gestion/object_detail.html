@@ -1,0 +1,27 @@
+{% extends 'gestion/base_gestion.html' %}
+
+{% block gestion_title %}{{ label }}{% endblock %}
+
+{% block gestion_content %}
+<div class="flex justify-between items-center mb-6">
+    <h2 class="noto-serif text-3xl">{{ label }}</h2>
+    <div class="flex gap-2">
+        <a href="{% url 'gestion:entity_update' entity object.pk %}" class="px-4 py-2 rounded-xl bg-surface-container-high text-xs font-bold uppercase tracking-widest">Modifier</a>
+        <a href="{% url 'gestion:entity_delete' entity object.pk %}" class="px-4 py-2 rounded-xl bg-red-600 text-white text-xs font-bold uppercase tracking-widest">Supprimer</a>
+        <a href="{% url 'gestion:entity_list' entity %}" class="px-4 py-2 rounded-xl border border-outline-variant/40 text-xs font-bold uppercase tracking-widest">Retour</a>
+    </div>
+</div>
+
+<div class="bg-white rounded-3xl border border-outline-variant/30 p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for field in fields %}
+                <div>
+                    <div class="rounded-2xl border border-outline-variant/20 bg-surface-container-low p-4 h-full">
+                        <div class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">{{ field.label }}</div>
+                        <div class="font-semibold mt-2 break-words">{{ field.value }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+    </div>
+</div>
+{% endblock %}

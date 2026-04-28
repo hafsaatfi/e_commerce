@@ -1,0 +1,91 @@
+{% extends 'gestion/base_gestion.html' %}
+
+{% block gestion_title %}Dashboard administrateur{% endblock %}
+
+{% block gestion_content %}
+<section class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+    <div class="xl:col-span-8 space-y-6">
+        <div>
+            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Vue generale</p>
+            <h3 class="noto-serif text-3xl">Indicateurs principaux</h3>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {% for item in primary_entities %}
+                <article class="bg-surface-container-low p-5 rounded-2xl border border-outline-variant/30 shadow-sm">
+                    <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">{{ item.label }}</p>
+                    <h4 class="noto-serif text-3xl mt-2">{{ item.count }}</h4>
+                    <div class="mt-4 flex gap-2">
+                        <a href="{% url 'gestion:entity_list' item.entity %}" class="px-3 py-2 rounded-xl bg-primary text-on-primary text-xs font-bold">Lister</a>
+                        <a href="{% url 'gestion:entity_create' item.entity %}" class="px-3 py-2 rounded-xl border border-outline-variant/40 text-xs font-bold">Ajouter</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+
+        <div class="bg-white p-6 rounded-3xl border border-outline-variant/30 shadow-[0_12px_48px_rgba(30,27,26,0.05)]">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="noto-serif text-2xl font-bold">Activite globale</h3>
+                    <p class="text-xs text-on-surface-variant">Comparaison visuelle des modules principaux.</p>
+                </div>
+                <span class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Temps reel</span>
+            </div>
+            <div class="h-[210px] rounded-2xl bg-[radial-gradient(#e9e1df_1px,transparent_1px)] [background-size:20px_20px] border border-outline-variant/20 flex items-end p-6 gap-4">
+                <div class="max-h-full w-full rounded-t-xl bg-primary/80" style="height: {{ entity_counts.utilisateurs|add:5 }}%;"></div>
+                <div class="max-h-full w-full rounded-t-xl bg-primary" style="height: {{ entity_counts.commandes|add:5 }}%;"></div>
+                <div class="max-h-full w-full rounded-t-xl bg-primary/70" style="height: {{ entity_counts.produits|add:5 }}%;"></div>
+                <div class="max-h-full w-full rounded-t-xl bg-primary/50" style="height: {{ entity_counts.paniers|add:5 }}%;"></div>
+            </div>
+            <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-on-surface-variant">
+                <span>Utilisateurs</span>
+                <span>Commandes</span>
+                <span>Produits</span>
+                <span>Paniers</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="xl:col-span-4 space-y-6">
+        <div class="bg-primary text-on-primary p-6 rounded-3xl shadow-xl relative overflow-hidden">
+            <div class="absolute -right-12 -top-12 h-48 w-48 bg-white/10 rounded-full blur-3xl"></div>
+            <h3 class="noto-serif text-2xl font-bold relative z-10">Actions rapides</h3>
+            <p class="text-xs text-white/70 mb-6 relative z-10">Acces direct aux pages de gestion.</p>
+            <div class="space-y-3 relative z-10">
+                <a href="{% url 'gestion:entity_list' 'produits' %}" class="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 p-4 rounded-2xl transition-all border border-white/10">
+                    <span class="text-sm font-bold">Produits</span>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </a>
+                <a href="{% url 'gestion:entity_list' 'commandes' %}" class="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 p-4 rounded-2xl transition-all border border-white/10">
+                    <span class="text-sm font-bold">Commandes</span>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </a>
+                <a href="{% url 'gestion:entity_list' 'utilisateurs' %}" class="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 p-4 rounded-2xl transition-all border border-white/10">
+                    <span class="text-sm font-bold">Utilisateurs</span>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </a>
+                <a href="{% url 'gestion:entity_list' 'paniers' %}" class="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 p-4 rounded-2xl transition-all border border-white/10">
+                    <span class="text-sm font-bold">Paniers</span>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="bg-surface-container p-5 rounded-3xl border border-outline-variant/20">
+            <h4 class="noto-serif text-xl">Sous-modules</h4>
+            <p class="text-xs text-on-surface-variant mb-4">Elements relies aux modules principaux.</p>
+            <div class="space-y-3">
+                {% for item in secondary_entities %}
+                    <div class="bg-white rounded-2xl border border-outline-variant/30 p-4 flex items-center justify-between gap-3">
+                        <div>
+                            <p class="text-xs font-semibold">{{ item.label }}</p>
+                            <p class="text-[11px] text-on-surface-variant">{{ item.count }} enregistrements</p>
+                        </div>
+                        <a href="{% url 'gestion:entity_list' item.entity %}" class="px-3 py-2 rounded-xl border border-outline-variant/40 text-xs font-bold">Ouvrir</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
