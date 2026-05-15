@@ -22,8 +22,8 @@
         {% endfor %}
 
         <div class="flex gap-2 pt-2">
-            <button type="submit" class="px-4 py-2 rounded-xl bg-pink-500 hover:bg-pink-400 text-white text-xs font-bold uppercase tracking-widest shadow-md shadow-pink-200/40 transition-all">{{ button_text }}</button>
-            <a href="{% url 'gestion:entity_list' entity %}" class="px-4 py-2 rounded-xl border border-outline-variant/40 text-xs font-bold uppercase tracking-widest">Annuler</a>
+            <button type="submit" class="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-400 to-pink-500 text-white text-xs font-bold uppercase tracking-widest hover:from-pink-500 hover:to-pink-600 transition-all shadow-md shadow-pink-300/40">{{ button_text }}</button>
+            <a href="{% url 'gestion:entity_list' entity %}" class="px-4 py-2 rounded-xl border border-pink-300 text-pink-600 text-xs font-bold uppercase tracking-widest hover:bg-pink-50 transition">Annuler</a>
         </div>
     </form>
 </div>

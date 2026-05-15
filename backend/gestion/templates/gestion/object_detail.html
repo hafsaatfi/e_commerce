@@ -6,9 +6,9 @@
 <div class="flex justify-between items-center mb-6">
     <h2 class="noto-serif text-3xl">{{ label }}</h2>
     <div class="flex gap-2">
-        <a href="{% url 'gestion:entity_update' entity object.pk %}" class="px-4 py-2 rounded-xl bg-surface-container-high text-xs font-bold uppercase tracking-widest">Modifier</a>
-        <a href="{% url 'gestion:entity_delete' entity object.pk %}" class="px-4 py-2 rounded-xl bg-red-600 text-white text-xs font-bold uppercase tracking-widest">Supprimer</a>
-        <a href="{% url 'gestion:entity_list' entity %}" class="px-4 py-2 rounded-xl border border-outline-variant/40 text-xs font-bold uppercase tracking-widest">Retour</a>
+        <a href="{% url 'gestion:entity_update' entity object.pk %}" class="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-400 to-pink-500 text-white text-xs font-bold uppercase tracking-widest hover:from-pink-500 hover:to-pink-600 transition">Modifier</a>
+        <a href="{% url 'gestion:entity_delete' entity object.pk %}" class="px-4 py-2 rounded-xl bg-red-500 text-white text-xs font-bold uppercase tracking-widest hover:bg-red-600 transition">Supprimer</a>
+        <a href="{% url 'gestion:entity_list' entity %}" class="px-4 py-2 rounded-xl border border-pink-300 text-pink-600 text-xs font-bold uppercase tracking-widest hover:bg-pink-50 transition">Retour</a>
     </div>
 </div>
 

@@ -53,34 +53,34 @@
             <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mt-1 opacity-60">Admin Console</p>
         </div>
         <nav class="flex-grow px-4 space-y-2 overflow-y-auto">
-            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if request.resolver_match.url_name == 'dashboard' %}bg-primary text-on-primary shadow-lg shadow-primary/20{% else %}hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface{% endif %}" href="{% url 'gestion:dashboard' %}">
+            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if request.resolver_match.url_name == 'dashboard' %}bg-gradient-to-r from-pink-500 to-pink-600 text-white shadow-lg shadow-pink-400/30{% else %}hover:bg-pink-100 text-on-surface-variant hover:text-pink-700{% endif %}" href="{% url 'gestion:dashboard' %}">
                 <span class="material-symbols-outlined">dashboard</span>
                 <span class="text-sm font-semibold">Dashboard</span>
             </a>
-            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if entity == 'utilisateurs' %}bg-primary text-on-primary shadow-lg shadow-primary/20{% else %}hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface{% endif %}" href="{% url 'gestion:entity_list' 'utilisateurs' %}">
+            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if entity == 'utilisateurs' %}bg-gradient-to-r from-pink-500 to-pink-600 text-white shadow-lg shadow-pink-400/30{% else %}hover:bg-pink-100 text-on-surface-variant hover:text-pink-700{% endif %}" href="{% url 'gestion:entity_list' 'utilisateurs' %}">
                 <span class="material-symbols-outlined">group</span>
                 <span class="text-sm font-semibold">Gestion des utilisateurs</span>
             </a>
-            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if entity == 'commandes' or entity == 'articles-commandes' %}bg-primary text-on-primary shadow-lg shadow-primary/20{% else %}hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface{% endif %}" href="{% url 'gestion:entity_list' 'commandes' %}">
+            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if entity == 'commandes' or entity == 'articles-commandes' %}bg-gradient-to-r from-pink-500 to-pink-600 text-white shadow-lg shadow-pink-400/30{% else %}hover:bg-pink-100 text-on-surface-variant hover:text-pink-700{% endif %}" href="{% url 'gestion:entity_list' 'commandes' %}">
                 <span class="material-symbols-outlined">local_shipping</span>
                 <span class="text-sm font-semibold">Gestion des commandes</span>
             </a>
-            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if entity == 'produits' or entity == 'categories' %}bg-primary text-on-primary shadow-lg shadow-primary/20{% else %}hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface{% endif %}" href="{% url 'gestion:entity_list' 'produits' %}">
+            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if entity == 'produits' or entity == 'categories' %}bg-gradient-to-r from-pink-500 to-pink-600 text-white shadow-lg shadow-pink-400/30{% else %}hover:bg-pink-100 text-on-surface-variant hover:text-pink-700{% endif %}" href="{% url 'gestion:entity_list' 'produits' %}">
                 <span class="material-symbols-outlined">inventory_2</span>
                 <span class="text-sm font-semibold">Gestion des produits</span>
             </a>
-            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if entity == 'paniers' or entity == 'articles-paniers' %}bg-primary text-on-primary shadow-lg shadow-primary/20{% else %}hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface{% endif %}" href="{% url 'gestion:entity_list' 'paniers' %}">
+            <a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {% if entity == 'paniers' or entity == 'articles-paniers' %}bg-gradient-to-r from-pink-500 to-pink-600 text-white shadow-lg shadow-pink-400/30{% else %}hover:bg-pink-100 text-on-surface-variant hover:text-pink-700{% endif %}" href="{% url 'gestion:entity_list' 'paniers' %}">
                 <span class="material-symbols-outlined">shopping_cart</span>
                 <span class="text-sm font-semibold">Gestion des paniers</span>
             </a>
         </nav>
-        <div class="p-6 mt-auto bg-surface-container-low border-t border-outline-variant/20">
+        <div class="p-6 mt-auto bg-pink-50 border-t border-pink-200">
             <div class="flex items-center justify-between gap-3">
                 <div>
-                    <p class="text-xs font-bold text-primary uppercase">{{ request.user.username }}</p>
-                    <p class="text-[10px] text-on-surface-variant">Administrateur</p>
+                    <p class="text-xs font-bold text-pink-600 uppercase">{{ request.user.username }}</p>
+                    <p class="text-[10px] text-pink-500">Administrateur</p>
                 </div>
-                <a href="{% url 'logout' %}" class="text-on-surface-variant hover:text-error transition-colors" title="Logout">
+                <a href="{% url 'logout' %}" class="text-pink-400 hover:text-pink-700 transition-colors" title="Logout">
                     <span class="material-symbols-outlined">logout</span>
                 </a>
             </div>
@@ -93,7 +93,7 @@
                 <h2 class="noto-serif text-2xl font-bold text-pink-800">{% block gestion_title %}Espace administrateur{% endblock %}</h2>
                 <p class="text-xs text-pink-600">Gestion élégante et féminine de votre plateforme</p>
             </div>
-            <a href="{% url 'gestion:entity_create' 'produits' %}" class="hidden md:inline-flex items-center gap-2 bg-gradient-to-r from-pink-500 via-pink-300 to-fuchsia-400 px-4 py-2 rounded-full text-white text-[11px] font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-md shadow-pink-200/10">
+            <a href="{% url 'gestion:entity_create' 'produits' %}" class="hidden md:inline-flex items-center gap-2 bg-gradient-to-r from-pink-400 to-pink-500 px-4 py-2 rounded-full text-white text-[11px] font-bold uppercase tracking-widest hover:from-pink-500 hover:to-pink-600 transition-all shadow-md shadow-pink-300/40">
                 <span class="material-symbols-outlined text-sm">add</span>
                 <span>Nouveau produit</span>
             </a>
@@ -111,23 +111,23 @@
     </div>
 </div>
 
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-bright/90 backdrop-blur-xl shadow-[0_-12px_48px_rgba(30,27,26,0.06)] lg:hidden border-t border-outline-variant/20">
-    <a class="flex flex-col items-center justify-center {% if request.resolver_match.url_name == 'dashboard' %}text-primary{% else %}text-on-surface-variant{% endif %}" href="{% url 'gestion:dashboard' %}">
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-pink-50/95 backdrop-blur-xl shadow-[0_-12px_48px_rgba(236,72,153,0.1)] lg:hidden border-t border-pink-200">
+    <a class="flex flex-col items-center justify-center {% if request.resolver_match.url_name == 'dashboard' %}text-pink-600{% else %}text-pink-400{% endif %}" href="{% url 'gestion:dashboard' %}">
         <span class="material-symbols-outlined">dashboard</span>
         <span class="text-[10px] font-medium">Dash</span>
     </a>
-    <a class="flex flex-col items-center justify-center {% if entity == 'produits' or entity == 'categories' %}text-primary{% else %}text-on-surface-variant{% endif %}" href="{% url 'gestion:entity_list' 'produits' %}">
+    <a class="flex flex-col items-center justify-center {% if entity == 'produits' or entity == 'categories' %}text-pink-600{% else %}text-pink-400{% endif %}" href="{% url 'gestion:entity_list' 'produits' %}">
         <span class="material-symbols-outlined">inventory_2</span>
         <span class="text-[10px] font-medium">Produits</span>
     </a>
-    <a class="flex flex-col items-center justify-center rounded-full px-5 py-1 scale-110 shadow-lg bg-gradient-to-r from-pink-500 via-pink-300 to-fuchsia-400 text-white hover:brightness-110 transition-all" href="{% url 'gestion:entity_create' 'produits' %}">
+    <a class="flex flex-col items-center justify-center rounded-full px-5 py-1 scale-110 shadow-lg bg-gradient-to-r from-pink-500 to-pink-600 text-white hover:from-pink-600 hover:to-pink-700 transition-all" href="{% url 'gestion:entity_create' 'produits' %}">
         <span class="material-symbols-outlined">add</span>
     </a>
-    <a class="flex flex-col items-center justify-center {% if entity == 'commandes' or entity == 'articles-commandes' %}text-primary{% else %}text-on-surface-variant{% endif %}" href="{% url 'gestion:entity_list' 'commandes' %}">
+    <a class="flex flex-col items-center justify-center {% if entity == 'commandes' or entity == 'articles-commandes' %}text-pink-600{% else %}text-pink-400{% endif %}" href="{% url 'gestion:entity_list' 'commandes' %}">
         <span class="material-symbols-outlined">local_shipping</span>
         <span class="text-[10px] font-medium">Commandes</span>
     </a>
-    <a class="flex flex-col items-center justify-center {% if entity == 'utilisateurs' %}text-primary{% else %}text-on-surface-variant{% endif %}" href="{% url 'gestion:entity_list' 'utilisateurs' %}">
+    <a class="flex flex-col items-center justify-center {% if entity == 'utilisateurs' %}text-pink-600{% else %}text-pink-400{% endif %}" href="{% url 'gestion:entity_list' 'utilisateurs' %}">
         <span class="material-symbols-outlined">group</span>
         <span class="text-[10px] font-medium">Users</span>
     </a>
