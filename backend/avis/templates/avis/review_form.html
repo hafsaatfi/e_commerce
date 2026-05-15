@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(120deg, #ffe4ec 0%, #f3e6fa 100%);
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, #f8bbd0 0%, #e1bee7 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 15px 15px;
+    }
+
+    .form-header h2 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 2rem;
+    }
+
+    .form-header p {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.95;
+        font-size: 1.05rem;
+    }
+
+    .form-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 0 auto 2rem;
+    }
+
+    .product-preview {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        border-left: 4px solid #f8bbd0;
+    }
+
+    .product-preview img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .product-preview-info h4 {
+        margin: 0 0 0.25rem 0;
+        color: #2c3e50;
+    }
+
+    .product-preview-info p {
+        margin: 0;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #2c3e50;
+        display: block;
+        margin-bottom: 0.75rem;
+        font-size: 1.05rem;
+    }
+
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 0.75rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #e1bee7;
+        box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.12);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .rating-selector {
+        display: flex;
+        gap: 1rem;
+        justify-content: space-around;
+    }
+
+    .rating-option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .rating-option input[type="radio"] {
+        display: none;
+    }
+
+    .rating-star {
+        font-size: 2.5rem;
+        transition: all 0.3s ease;
+        filter: grayscale(100%);
+    }
+
+    .rating-option input[type="radio"]:checked + .rating-star,
+    .rating-option:hover .rating-star {
+        filter: grayscale(0%);
+        transform: scale(1.2);
+    }
+
+    .rating-label {
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        color: #7f8c8d;
+        font-weight: 500;
+    }
+
+    .error-message {
+        color: #ff6b6b;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        background: #ffe0e0;
+        border-left: 3px solid #ff6b6b;
+        border-radius: 4px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .btn-custom {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .btn-submit {
+        background: linear-gradient(90deg, #f8bbd0 0%, #e1bee7 100%);
+        color: white;
+        flex: 1;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(214, 51, 132, 0.25);
+    }
+
+    .btn-cancel {
+        background: #f0f0f0;
+        color: #2c3e50;
+        flex: 1;
+    }
+
+    .btn-cancel:hover {
+        background: #e0e0e0;
+    }
+
+    @media (max-width: 768px) {
+        .form-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .form-container {
+            padding: 1.5rem;
+        }
+
+        .product-preview {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="form-header">
+    <div class="container">
+        <h2>{% if review and review.pk %}✏️ Modifier mon avis{% else %}⭐ Ajouter un avis{% endif %}</h2>
+        <p>Votre opinion nous intéresse!</p>
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="form-container">
+        <!-- Product Preview -->
+        <div class="product-preview">
+            {% if produit.image %}
+                <img src="{{ produit.image.url }}" alt="{{ produit.nom }}">
+            {% else %}
+                <div style="width: 80px; height: 80px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <span>📷</span>
+                </div>
+            {% endif %}
+            <div class="product-preview-info">
+                <h4>{{ produit.nom }}</h4>
+                <p>{{ produit.categorie.nom }}</p>
+                <p style="font-weight: 600; color: #d63384;">{{ produit.prix }} DH</p>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Rating Selection -->
+            <div class="form-group">
+                <label>Votre note</label>
+                <div class="rating-selector">
+                    {% for value, label in form.note.field.choices %}
+                        <div class="rating-option">
+                            <input type="radio" name="note" value="{{ value }}" id="rating_{{ value }}" 
+                                {% if form.note.value == value|stringformat:"s" or form.note.value == value %}checked{% endif %}>
+                            <label for="rating_{{ value }}" class="rating-star">
+                                {% for i in "12345" %}
+                                    {% if i|add:0 <= value %}★{% else %}☆{% endif %}
+                                {% endfor %}
+                            </label>
+                            <span class="rating-label">{{ label }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% for e in form.note.errors %}<div class="error-message">{{ e }}</div>{% endfor %}
+            </div>
+
+            <!-- Comment -->
+            <div class="form-group">
+                <label for="{{ form.commentaire.id_for_label }}">Votre commentaire (optionnel)</label>
+                {{ form.commentaire }}
+                {% for e in form.commentaire.errors %}<div class="error-message">{{ e }}</div>{% endfor %}
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn-custom btn-submit">
+                    {% if review and review.pk %}Mettre à jour mon avis{% else %}Publier mon avis{% endif %}
+                </button>
+                <a href="{% url 'avis:avis-product' produit.id %}" class="btn-custom btn-cancel" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
+                    Annuler
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

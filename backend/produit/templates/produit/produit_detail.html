@@ -2,7 +2,7 @@
 
 {% block extra_head %}
 <style>
-    header.fixed.top-0 { display: none !important; }
+    /* header.fixed.top-0 { display: none !important; } */
 </style>
 {% endblock %}
 
@@ -25,6 +25,10 @@
 
         <div class="d-flex gap-2 mt-3">
             <a href="{% url 'produit:liste_produits' %}" class="btn btn-secondary">&#8592; MonShop</a>
+            <a href="{% url 'avis:avis-product' produit.id %}" class="btn btn-outline-primary">Voir les avis</a>
+            {% if average %}
+                <div class="align-self-center ms-3">Note moyenne: <strong>{{ average }} / 5</strong></div>
+            {% endif %}
         </div>
     </div>
 </div>

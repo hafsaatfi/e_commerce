@@ -7,16 +7,20 @@
     .track-card {
         font-family: 'Manrope', 'Poppins', sans-serif;
         background: #ffffff;
-        border: 1px solid #d9d9d4;
+        border: 1px solid #f1d4e8;
         border-radius: 22px;
-        box-shadow: 0 20px 55px rgba(18, 18, 18, 0.08);
+        box-shadow: 0 20px 55px rgba(214, 51, 132, 0.12);
         overflow: hidden;
     }
 
+    body {
+        background: linear-gradient(120deg, #ffe4ec 0%, #f3e6fa 100%);
+    }
+
     .track-hero {
-        background: linear-gradient(180deg, #f8f8f5 0%, #f1f1ed 100%);
-        color: #151515;
-        border-bottom: 1px solid #e3e3de;
+        background: linear-gradient(135deg, #f8bbd0 0%, #e1bee7 100%);
+        color: #ffffff;
+        border-bottom: 1px solid #f1d4e8;
         padding: 30px;
     }
 
@@ -26,16 +30,16 @@
         gap: 8px;
         padding: 8px 12px;
         border-radius: 999px;
-        background: #ebebe8;
-        color: #545454;
-        border: 1px solid #dfdfda;
+        background: #ffffff;
+        color: #a64ca6;
+        border: 1px solid #f1d4e8;
         font-size: 13px;
         font-weight: 700;
     }
 
     .info-box {
-        background: #fcfcfa;
-        border: 1px solid #e5e5df;
+        background: #ffffff;
+        border: 1px solid #f1d4e8;
         border-radius: 12px;
         padding: 20px;
     }
@@ -44,14 +48,26 @@
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: .14em;
-        color: #737373;
+        color: #a64ca6;
         font-weight: 700;
     }
 
     .action-btn {
-        border-radius: 10px;
+        border-radius: 2rem;
         padding: 0.82rem 1.35rem;
         font-weight: 700;
+    }
+
+    .btn-dark.action-btn {
+        background: linear-gradient(90deg, #f8bbd0 0%, #e1bee7 100%);
+        border: none;
+        color: #ffffff;
+    }
+
+    .btn-outline-secondary.action-btn {
+        border-color: #e1bee7;
+        color: #a64ca6;
+        background: #ffffff;
     }
 
     @media (max-width: 991px) {

@@ -2,8 +2,6 @@
 
 {% block extra_head %}
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <script>
     tailwind.config = {
         theme: {
@@ -64,18 +62,7 @@
 
 {% block content %}
 <div class="min-h-screen bg-surface text-on-surface pb-28">
-    <header class="fixed top-0 w-full z-40 bg-surface-bright/85 backdrop-blur-xl border-b border-outline-variant/30 px-5 md:px-8 py-4 flex justify-between items-center">
-        <a href="/produits/" class="text-primary hover:opacity-80 transition-opacity">
-            <span class="material-symbols-outlined">storefront</span>
-        </a>
-        <h1 class="noto-serif text-sm md:text-lg font-bold tracking-[0.2em] text-primary uppercase">CosméBeauty</h1>
-        <a href="/panier/" class="relative text-primary hover:opacity-80 transition-opacity">
-            <span class="material-symbols-outlined">shopping_bag</span>
-            {% if panier_count and panier_count > 0 %}
-            <span style="position:absolute;top:-8px;right:-8px;background:#e9b6c1;color:#fff;font-size:0.8rem;font-weight:bold;padding:2px 7px;border-radius:999px;min-width:22px;text-align:center;box-shadow:0 2px 8px #e9b6c133;">+{{ panier_count }}</span>
-            {% endif %}
-        </a>
-    </header>
+    {# header moved to base partials/cosmetic_header.html #}
 
     <main class="pt-24 space-y-16">
         <section class="px-5 md:px-8">
@@ -217,31 +204,6 @@
     </section>
     </main>
 
-    <a href="/chatbot/" class="fixed bottom-24 right-5 z-40 w-14 h-14 bg-gradient-to-tr from-primary to-primary-container rounded-full flex items-center justify-center text-white shadow-2xl shadow-primary/30 hover:scale-110 transition-transform">
-        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
-    </a>
-
-    <nav class="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center px-4 pb-4 pt-3 bg-surface-bright/90 backdrop-blur-xl rounded-t-3xl border-t border-outline-variant/30">
-        <a href="/produits/" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors">
-            <span class="material-symbols-outlined mb-1">storefront</span>
-            <span class="text-[10px] font-medium">Boutique</span>
-        </a>
-        <a href="/produits/" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors">
-            <span class="material-symbols-outlined mb-1">search</span>
-            <span class="text-[10px] font-medium">Search</span>
-        </a>
-        <a href="{% url 'user-home' %}" class="flex flex-col items-center bg-primary/15 text-primary rounded-full px-5 py-1 scale-110">
-            <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
-            <span class="text-[10px] font-medium">Home</span>
-        </a>
-        <a href="/panier/" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors">
-            <span class="material-symbols-outlined mb-1">shopping_cart</span>
-            <span class="text-[10px] font-medium">Cart</span>
-        </a>
-        <a href="/logout/" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors">
-            <span class="material-symbols-outlined mb-1">person</span>
-            <span class="text-[10px] font-medium">Logout</span>
-        </a>
-    </nav>
+    {# bottom nav moved to base partials/bottom_nav.html #}
 </div>
 {% endblock %}

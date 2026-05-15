@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(120deg, #ffe4ec 0%, #f3e6fa 100%);
+    }
+
+    .delete-container {
+        max-width: 500px;
+        margin: 3rem auto;
+    }
+
+    .delete-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 25px rgba(214, 51, 132, 0.18);
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .delete-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        animation: bounce 0.6s ease;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .delete-card h3 {
+        color: #d63384;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .delete-card p {
+        color: #7f8c8d;
+        margin-bottom: 1.5rem;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .product-name {
+        background: linear-gradient(90deg, #f8bbd0 0%, #e1bee7 100%);
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        font-weight: 600;
+    }
+
+    .delete-actions {
+        display: flex;
+        gap: 1rem;
+        flex-direction: column;
+    }
+
+    .btn-custom {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .btn-delete {
+        background: #ff6b6b;
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background: #ff5252;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .btn-cancel {
+        background: #f0f0f0;
+        color: #a64ca6;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-cancel:hover {
+        background: #e0e0e0;
+    }
+
+    .warning-note {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: #856404;
+    }
+</style>
+
+<div class="container py-4">
+    <div class="delete-container">
+        <div class="delete-card">
+            <div class="delete-icon">⚠️</div>
+            <h3>Supprimer votre avis</h3>
+            <p>Cette action est définitive. Vous ne pourrez pas annuler cette suppression.</p>
+            
+            <div class="product-name">
+                📦 {{ avis.produit.nom }}
+            </div>
+
+            <p style="color: #e74c3c; font-weight: 600; margin-bottom: 2rem;">
+                Êtes-vous vraiment sûr de vouloir supprimer votre avis ?
+            </p>
+
+            <div class="delete-actions">
+                <form method="post" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-custom btn-delete w-100">
+                        🗑️ Oui, supprimer mon avis
+                    </button>
+                </form>
+                <a href="{% url 'avis:avis-product' avis.produit.id %}" class="btn-custom btn-cancel">
+                    ← Annuler
+                </a>
+            </div>
+
+            <div class="warning-note">
+                <strong>💡 Note:</strong> Si vous changez d'avis plus tard, vous pourrez toujours en laisser un nouveau.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

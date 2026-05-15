@@ -1,0 +1,24 @@
+<header class="fixed top-0 w-full z-40 bg-surface-bright/85 backdrop-blur-xl border-b border-outline-variant/30 px-5 md:px-8 py-4 flex justify-between items-center">
+    <a href="/produits/" class="text-primary hover:opacity-80 transition-opacity">
+        <span class="material-symbols-outlined">storefront</span>
+    </a>
+    <h1 class="noto-serif text-sm md:text-lg font-bold tracking-[0.2em] text-primary uppercase">CosméBeauty</h1>
+    <div class="flex items-center gap-3">
+        <a href="/panier/" class="relative text-primary hover:opacity-80 transition-opacity">
+            <span class="material-symbols-outlined">shopping_bag</span>
+            {% if panier_count and panier_count > 0 %}
+            <span style="position:absolute;top:-8px;right:-8px;background:#e9b6c1;color:#fff;font-size:0.8rem;font-weight:bold;padding:2px 7px;border-radius:999px;min-width:22px;text-align:center;box-shadow:0 2px 8px #e9b6c133;">+{{ panier_count }}</span>
+            {% endif %}
+        </a>
+        {% if user.is_authenticated %}
+            <form method="post" action="/logout/" class="m-0">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center" title="Deconnexion" aria-label="Deconnexion">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">logout</span>
+                </button>
+            </form>
+        {% else %}
+            <a href="/users/login/" class="btn btn-sm btn-success">Login</a>
+        {% endif %}
+    </div>
+</header>

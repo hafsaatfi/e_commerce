@@ -2,17 +2,8 @@
 {% extends 'base.html' %}
 {% block extra_head %}
 <style>
-    header.fixed.top-0 { display: none !important; }
 </style>
 {% endblock %}
-
-<div class="shop-title" style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px;">
-    <span style="font-size:2.2rem; color:#e9b6c1; vertical-align:middle;">
-        <!-- Icône cosmétique (ex: flacon de parfum, FontAwesome ou SVG) -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 24 24"><path fill="#e9b6c1" d="M12 2c.552 0 1 .448 1 1v1.382c2.28.464 4 2.484 4 4.868V10h1c.552 0 1 .448 1 1v9c0 1.105-.895 2-2 2H7c-1.105 0-2-.895-2-2v-9c0-.552.448-1 1-1h1V9.25c0-2.384 1.72-4.404 4-4.868V3c0-.552.448-1 1-1Zm0 2.5c-1.93 0-3.5 1.57-3.5 3.5V10h7V8c0-1.93-1.57-3.5-3.5-3.5ZM7 11v9h10v-9H7Zm5 2a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"/></svg>
-    </span>
-    <span>MonShop</span>
-</div>
 
 {% block content %}
 <style>
@@ -134,6 +125,17 @@
         margin: 40px 0;
     }
 </style>
+
+<div class="shop-title" style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px;">
+    <span style="font-size:2.2rem; color:#e9b6c1; vertical-align:middle;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 24 24"><path fill="#e9b6c1" d="M12 2c.552 0 1 .448 1 1v1.382c2.28.464 4 2.484 4 4.868V10h1c.552 0 1 .448 1 1v9c0 1.105-.895 2-2 2H7c-1.105 0-2-.895-2-2v-9c0-.552.448-1 1-1h1V9.25c0-2.384 1.72-4.404 4-4.868V3c0-.552.448-1 1-1Zm0 2.5c-1.93 0-3.5 1.57-3.5 3.5V10h7V8c0-1.93-1.57-3.5-3.5-3.5ZM7 11v9h10v-9H7Zm5 2a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"/></svg>
+    </span>
+    <span>MonShop</span>
+</div>
+
+<div style="max-width: 980px; margin: 0 auto 12px auto; color: #7b5455; font-weight: 600;">
+    Filtre produits
+</div>
 
 <form method="get" class="shop-filters">
     <input type="text" name="q" value="{{ query }}" placeholder="Rechercher un produit...">

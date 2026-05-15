@@ -1,0 +1,381 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(120deg, #ffe4ec 0%, #f3e6fa 100%);
+    }
+
+    .product-header {
+        background: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        border-bottom: 3px solid #f8bbd0;
+    }
+
+    .product-header-content {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+    }
+
+    .product-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+        object-fit: cover;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-info h2 {
+        color: #d63384;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .product-info p {
+        color: #7f8c8d;
+        margin: 0.3rem 0;
+    }
+
+    .price-tag {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #d63384;
+        margin-top: 0.5rem;
+    }
+
+    .rating-banner {
+        background: linear-gradient(135deg, #f8bbd0 0%, #e1bee7 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(214, 51, 132, 0.25);
+    }
+
+    .rating-banner h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .rating-banner p {
+        margin: 0;
+        opacity: 0.9;
+    }
+
+    .stars-large {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .actions-section {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-custom {
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .btn-primary-gradient {
+        background: linear-gradient(90deg, #f8bbd0 0%, #e1bee7 100%);
+        color: white;
+    }
+
+    .btn-primary-gradient:hover {
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(214, 51, 132, 0.25);
+    }
+
+    .btn-secondary-custom {
+        background: white;
+        color: #a64ca6;
+        border: 2px solid #e1bee7;
+    }
+
+    .btn-secondary-custom:hover {
+        background: #fff6fb;
+    }
+
+    .btn-danger-custom {
+        background: #ff6b6b;
+        color: white;
+    }
+
+    .btn-danger-custom:hover {
+        background: #ff5252;
+        color: white;
+    }
+
+    .reviews-section h3 {
+        color: #d63384;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+    }
+
+    .review-card {
+        background: white;
+        border-left: 4px solid #f8bbd0;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .review-card:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 1rem;
+        gap: 1rem;
+    }
+
+    .reviewer-name {
+        font-weight: 600;
+        color: #a64ca6;
+        font-size: 1.1rem;
+    }
+
+    .review-date {
+        color: #95a5a6;
+        font-size: 0.85rem;
+    }
+
+    .review-rating {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .review-rating-stars {
+        font-size: 1.25rem;
+    }
+
+    .review-rating-text {
+        font-weight: 600;
+        color: #a64ca6;
+        background: #fff6fb;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .review-comment {
+        color: #555;
+        line-height: 1.6;
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .review-comment-empty {
+        color: #95a5a6;
+        font-style: italic;
+    }
+
+    .no-reviews-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #7f8c8d;
+    }
+
+    .no-reviews-state h4 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+    }
+
+    .no-reviews-state p {
+        margin-bottom: 2rem;
+        font-size: 1.05rem;
+    }
+
+    .btn-add-first-review {
+        background: linear-gradient(90deg, #f8bbd0 0%, #e1bee7 100%);
+        color: white;
+        padding: 0.75rem 2rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+    .btn-add-first-review:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(214, 51, 132, 0.25);
+        color: white;
+    }
+
+    .back-button {
+        color: #d63384;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+        color: #a64ca6;
+        transform: translateX(-3px);
+    }
+
+    @media (max-width: 768px) {
+        .product-header-content {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .review-header {
+            flex-direction: column;
+        }
+
+        .actions-section {
+            flex-direction: column;
+        }
+
+        .btn-custom {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="container py-4">
+    <a href="{% url 'avis:avis-index' %}" class="back-button">← Retour aux avis</a>
+
+    <div class="product-header">
+        <div class="container">
+            <div class="product-header-content">
+                {% if produit.image %}
+                    <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" class="product-image">
+                {% else %}
+                    <div class="product-image bg-light d-flex align-items-center justify-content-center">
+                        <span class="text-muted">📷</span>
+                    </div>
+                {% endif %}
+
+                <div class="product-info flex-grow-1">
+                    <h2>{{ produit.nom }}</h2>
+                    <p><strong>Catégorie:</strong> {{ produit.categorie.nom }}</p>
+                    <p><strong>Stock:</strong> {{ produit.stock }} unités disponibles</p>
+                    <div class="price-tag">{{ produit.prix }} DH</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if average %}
+        <div class="rating-banner">
+            <div class="stars-large">
+                {% for i in "12345" %}
+                    {% if i|add:0 <= average|floatformat:0|add:0 %}
+                        ★
+                    {% else %}
+                        ☆
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <h3>{{ average }} / 5</h3>
+            <p>Basé sur {{ reviews.count }} avis</p>
+        </div>
+    {% endif %}
+
+    <div class="actions-section">
+        {% if user.is_authenticated %}
+            {% if not user_review %}
+                <a href="{% url 'avis:avis-add' produit.id %}" class="btn btn-custom btn-primary-gradient">
+                    ✏️ Ajouter un avis
+                </a>
+            {% else %}
+                <a href="{% url 'avis:avis-add' produit.id %}" class="btn btn-custom btn-secondary-custom">
+                    ✏️ Modifier mon avis
+                </a>
+                <form action="{% url 'avis:avis-delete' user_review.id %}" method="post" style="display:inline-block;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-custom btn-danger-custom" onclick="return confirm('Êtes-vous sûr de vouloir supprimer votre avis ?');">
+                        🗑️ Supprimer mon avis
+                    </button>
+                </form>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-custom btn-primary-gradient">
+                🔐 Connecte-toi pour laisser un avis
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="reviews-section">
+        <h3>💬 Avis des clients ({{ reviews.count }})</h3>
+
+        {% if reviews %}
+            <div class="review-list">
+                {% for avis in reviews %}
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div>
+                                <div class="reviewer-name">{{ avis.utilisateur.get_full_name|default:avis.utilisateur.username }}</div>
+                                <div class="review-date">{{ avis.date_creation|date:"j M Y \à H:i" }}</div>
+                            </div>
+                        </div>
+
+                        <div class="review-rating">
+                            <div class="review-rating-stars">
+                                {% for i in "12345" %}
+                                    {% if i|add:0 <= avis.note %}
+                                        ★
+                                    {% else %}
+                                        ☆
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <span class="review-rating-text">{{ avis.note }}/5</span>
+                        </div>
+
+                        {% if avis.commentaire %}
+                            <p class="review-comment">{{ avis.commentaire }}</p>
+                        {% else %}
+                            <p class="review-comment review-comment-empty">Aucun commentaire</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-reviews-state">
+                <h4>✨ Aucun avis pour le moment</h4>
+                <p>Soyez le premier à donner votre avis sur ce produit!</p>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'avis:avis-add' produit.id %}" class="btn-add-first-review">
+                        ✏️ Ajouter un avis
+                    </a>
+                {% else %}
+                    <p style="color: #95a5a6; margin-top: 1.5rem;">
+                        <a href="{% url 'login' %}" style="color: #667eea; font-weight: 600; text-decoration: none;">Connecte-toi</a> pour laisser le premier avis
+                    </p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

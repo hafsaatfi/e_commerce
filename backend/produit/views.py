@@ -27,16 +27,26 @@ def liste_produits(request):
         'categories': categories,
         'query': query,
         'categorie_id': categorie_id,
-        'hide_nav': True,
     }
     return render(request, 'produit/produits.html', context)
 
 
+from django.db.models import Avg
+
 def detail_produit(request, produit_id):
     produit = get_object_or_404(Produit.objects.select_related('categorie'), id=produit_id)
+    # compute average note and check if current user already reviewed
+    from avis.models import Avis
+    reviews = Avis.objects.filter(produit=produit)
+    avg = reviews.aggregate(avg_note=Avg('note'))['avg_note'] or None
+    user_review = None
+    if request.user.is_authenticated:
+        user_review = reviews.filter(utilisateur=request.user).first()
+
     context = {
         'produit': produit,
-        'hide_nav': True,
+        'average': round(avg,2) if avg else None,
+        'user_review': user_review,
     }
     return render(request, 'produit/produit_detail.html', context)
 
@@ -96,7 +106,6 @@ def detail_categorie(request, categorie_id):
     context = {
         'categorie': categorie,
         'produits': produits,
-        'hide_nav': True,
     }
     return render(request, 'produit/categorie_detail.html', context)
 

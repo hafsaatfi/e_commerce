@@ -1,7 +1,17 @@
 from django import forms
 import re
 
-from .models import DELIVERY_METHOD_CHOICES, SKIN_TYPE_CHOICES
+SKIN_TYPE_CHOICES = [
+    ('seche', 'Peau sèche'),
+    ('grasse', 'Peau grasse'),
+    ('mixte', 'Peau mixte'),
+]
+
+DELIVERY_METHOD_CHOICES = [
+    ('standard', 'Livraison standard (2-4 jours)'),
+    ('express', 'Livraison express (24h)'),
+    ('pickup', 'Retrait en point relais'),
+]
 
 
 class CommandeCheckoutForm(forms.Form):

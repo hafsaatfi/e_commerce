@@ -1,0 +1,22 @@
+<nav class="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center px-4 pb-4 pt-3 bg-surface-bright/90 backdrop-blur-xl rounded-t-3xl border-t border-outline-variant/30 bottom-nav-fallback">
+    <a href="/produits/" class="flex flex-col items-center {% if '/produits' in request.path %}text-primary{% else %}text-on-surface-variant{% endif %} hover:text-primary transition-colors">
+        <span class="material-symbols-outlined mb-1">storefront</span>
+        <span class="text-[10px] font-medium">Boutique</span>
+    </a>
+    <a href="/commande/" class="flex flex-col items-center {% if '/commande' in request.path or '/confirmation' in request.path %}text-primary{% else %}text-on-surface-variant{% endif %} hover:text-primary transition-colors">
+        <span class="material-symbols-outlined mb-1">receipt_long</span>
+        <span class="text-[10px] font-medium">Commande</span>
+    </a>
+    <a href="{% url 'user-home' %}" class="flex flex-col items-center {% if request.path == '/' or '/users' in request.path %}bg-primary/15 text-primary{% else %}text-on-surface-variant{% endif %} rounded-full px-5 py-1 scale-110">
+        <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
+        <span class="text-[10px] font-medium">Home</span>
+    </a>
+    <a href="/panier/" class="flex flex-col items-center {% if '/panier' in request.path %}text-primary{% else %}text-on-surface-variant{% endif %} hover:text-primary transition-colors">
+        <span class="material-symbols-outlined mb-1">shopping_cart</span>
+        <span class="text-[10px] font-medium">Cart</span>
+    </a>
+    <a href="/avis/" class="flex flex-col items-center {% if '/avis' in request.path %}text-primary{% else %}text-on-surface-variant{% endif %} hover:text-primary transition-colors">
+        <span class="material-symbols-outlined mb-1">rate_review</span>
+        <span class="text-[10px] font-medium">Avis</span>
+    </a>
+</nav>

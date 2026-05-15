@@ -83,6 +83,9 @@
                     {% endif %}
                     <form method="POST" class="d-grid gap-3">
                         {% csrf_token %}
+                        {% if next %}
+                            <input type="hidden" name="next" value="{{ next }}">
+                        {% endif %}
                         <div>
                             <label for="id_username" class="form-label" style="color:#a64ca6;">Nom d'utilisateur</label>
                             <input type="text" id="id_username" name="username" class="form-control form-control-lg" placeholder="Votre nom d'utilisateur" autocomplete="username" style="border-radius:1.5rem; border:1.5px solid #f8bbd0;">

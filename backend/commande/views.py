@@ -1,7 +1,13 @@
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from panier.models import Panier, ArticlePanier
+from .forms import CommandeCheckoutForm
 from .models import Commande, ArticleCommande
 from users.permissions import admin_required
+
+
+def commande_index(request):
+    form = CommandeCheckoutForm(request.POST or None)
+    return render(request, 'commande/passer_commande.html', {'form': form})
 
 @admin_required
 def passer_commande(request):

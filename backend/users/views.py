@@ -1,5 +1,8 @@
-from django.shortcuts import render, redirect
+import logging
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import redirect_to_login
+from django.shortcuts import render, redirect
+from django.utils.http import url_has_allowed_host_and_scheme
 
 
 from produit.models import Categorie, Produit
@@ -10,10 +13,20 @@ from avis.models import Avis
 def home(request):
     if request.user.is_authenticated:
         return redirect('user-home')
-    return redirect('login')
+    return redirect_to_login(request.get_full_path())
 
 def login_view(request):
+    next_url = request.POST.get('next') or request.GET.get('next')
+
+    logger = logging.getLogger(__name__)
+
     if request.user.is_authenticated:
+        if next_url and url_has_allowed_host_and_scheme(
+            next_url,
+            allowed_hosts={request.get_host()},
+            require_https=request.is_secure(),
+        ):
+            return redirect(next_url)
         if request.user.is_staff or getattr(request.user, 'role', None) == 'admin':
             return redirect('gestion:dashboard')
         return redirect('user-home')
@@ -22,17 +35,35 @@ def login_view(request):
         username = request.POST['username']
         password = request.POST['password']
 
+        # Debug logging: record attempt (do not log password in production)
+        try:
+            from django.contrib.auth import get_user_model
+            User = get_user_model()
+            found = User.objects.filter(username=username).exists()
+        except Exception:
+            found = False
+        logger.info(f"Login attempt for username='{username}' found_in_db={found}")
+        print(f"[DEBUG] Login attempt for username='{username}' found_in_db={found}")
+
         user = authenticate(request, username=username, password=password)
+        logger.info(f"Authentication result for username='{username}': {'OK' if user else 'FAIL'}")
+        print(f"[DEBUG] Authentication result for username='{username}': {'OK' if user else 'FAIL'}")
 
         if user:
             login(request, user)
+            if next_url and url_has_allowed_host_and_scheme(
+                next_url,
+                allowed_hosts={request.get_host()},
+                require_https=request.is_secure(),
+            ):
+                return redirect(next_url)
             if user.is_staff or getattr(user, 'role', None) == 'admin':
                 return redirect('gestion:dashboard')
             return redirect('user-home')
         else:
-            return render(request, 'login.html', {'error': 'Login invalide', 'hide_nav': True})
+            return render(request, 'login.html', {'error': 'Login invalide', 'hide_nav': True, 'next': next_url})
 
-    return render(request, 'login.html', {'hide_nav': True})
+    return render(request, 'login.html', {'hide_nav': True, 'next': next_url})
 from .models import Utilisateur
 
 def register_view(request):
@@ -77,7 +108,7 @@ def register_view(request):
 
 def user_home(request):
     if not request.user.is_authenticated:
-        return redirect('login')
+        return redirect_to_login(request.get_full_path())
     if request.user.is_staff or getattr(request.user, 'role', None) == 'admin':
         return redirect('gestion:dashboard')
 

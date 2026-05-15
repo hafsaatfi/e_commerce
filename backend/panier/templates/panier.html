@@ -1,4 +1,7 @@
 
+{% extends 'base.html' %}
+
+{% block extra_head %}
 <style>
     body {
         background: #fff8f6;
@@ -117,6 +120,9 @@
         margin: 40px 0;
     }
 </style>
+{% endblock %}
+
+{% block content %}
 
 <div class="panier-container">
     <div class="panier-title">🛒 Mon Panier</div>
@@ -142,5 +148,7 @@
     <div class="panier-total">Total : {{ total }} DH</div>
     <a href="/commande/checkout/" class="panier-checkout">🧾 Valider la commande</a>
 </div>
+
+{% endblock %}
 
 

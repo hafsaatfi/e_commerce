@@ -1,16 +1,24 @@
 {% extends 'base.html' %}
 
+{% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
     :root {
-        --checkout-bg: #f3f3ef;
+        --checkout-bg: #ffe4ec;
         --checkout-card: #ffffff;
-        --checkout-border: #ddddd6;
-        --checkout-border-strong: #cbcbc3;
-        --checkout-text: #171717;
-        --checkout-muted: #666666;
+        --checkout-border: #f1d4e8;
+        --checkout-border-strong: #e1bee7;
+        --checkout-text: #a64ca6;
+        --checkout-muted: #a64ca6;
+    }
+
+    body {
+        background: linear-gradient(120deg, #ffe4ec 0%, #f3e6fa 100%);
     }
 
     .checkout-shell {
@@ -26,7 +34,7 @@
         border-right: 1px solid #e7e7e1;
         background:
             radial-gradient(circle at 12% 12%, rgba(0, 0, 0, 0.035), transparent 42%),
-            linear-gradient(160deg, #f6f6f2 0%, #fbfbf7 100%);
+            linear-gradient(160deg, #f8bbd0 0%, #f3e6fa 100%);
         padding: 2.4rem;
         min-height: 100%;
         display: flex;
@@ -43,7 +51,7 @@
         font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.2em;
-        color: #6f6f6f;
+        color: #a64ca6;
         margin-bottom: 0.6rem;
         font-weight: 700;
     }
@@ -51,14 +59,14 @@
     .title {
         font-size: clamp(1.7rem, 2.5vw, 2.25rem);
         font-weight: 700;
-        color: var(--checkout-text);
+        color: #d63384;
         margin-bottom: 1rem;
         line-height: 1.18;
         max-width: 16ch;
     }
 
     .muted {
-        color: #626262;
+        color: #a64ca6;
         font-size: 0.96rem;
         line-height: 1.65;
         max-width: 36ch;
@@ -72,18 +80,18 @@
     }
 
     .meta-item {
-        border: 1px solid #e2e2dc;
+        border: 1px solid #f1d4e8;
         border-radius: 10px;
         padding: 0.82rem 0.9rem;
         font-size: 0.84rem;
-        color: #3f3f3f;
+        color: #a64ca6;
         background: rgba(255, 255, 255, 0.9);
     }
 
     .left-footnote {
         margin-top: 2rem;
         font-size: 0.79rem;
-        color: #6f6f6f;
+        color: #a64ca6;
         border-top: 1px solid #e6e6e1;
         padding-top: 1rem;
     }
@@ -93,15 +101,15 @@
         align-items: center;
         margin-top: 0.8rem;
         padding: 4px 9px;
-        border: 1px solid #dbdbd5;
+        border: 1px solid #f1d4e8;
         border-radius: 999px;
         font-size: 11px;
-        color: #666666;
+        color: #a64ca6;
         background: #ffffff;
     }
 
     .form-wrap {
-        border: 1px solid #e3e3dd;
+        border: 1px solid #f1d4e8;
         border-radius: 16px;
         background: #ffffff;
         padding: 1.25rem;
@@ -115,7 +123,7 @@
     }
 
     .section-note {
-        color: #727272;
+        color: #a64ca6;
         font-size: 0.87rem;
         margin-bottom: 1.15rem;
     }
@@ -139,7 +147,7 @@
         font-size: 0.73rem;
         text-transform: uppercase;
         letter-spacing: 0.14em;
-        color: #616161;
+        color: #a64ca6;
         font-weight: 700;
         margin-bottom: 0.42rem;
     }
@@ -159,7 +167,7 @@
     .form-control:focus,
     .form-select:focus {
         border-color: var(--checkout-border-strong);
-        box-shadow: 0 0 0 3px rgba(32, 32, 32, 0.08);
+        box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.12);
     }
 
     textarea.form-control {
@@ -168,7 +176,7 @@
     }
 
     .field-help {
-        color: #7c7c7c;
+        color: #a64ca6;
         font-size: 0.78rem;
         margin-top: 0.35rem;
     }
@@ -185,12 +193,12 @@
 
     .small-tip {
         font-size: 0.8rem;
-        color: #6f6f6f;
+        color: #a64ca6;
     }
 
     .submit-btn {
-        background: #111111;
-        border: 1px solid #111111;
+        background: linear-gradient(90deg, #f8bbd0 0%, #e1bee7 100%);
+        border: 1px solid #e1bee7;
         color: #ffffff;
         border-radius: 10px;
         padding: 0.86rem 1.45rem;
@@ -201,11 +209,11 @@
     }
 
     .submit-btn:hover {
-        background: #000000;
-        color: #ffffff;
-        border-color: #000000;
+        background: linear-gradient(90deg, #e1bee7 0%, #f8bbd0 100%);
+        color: #d63384;
+        border-color: #f8bbd0;
         transform: translateY(-1px);
-        box-shadow: 0 12px 26px rgba(17, 17, 17, 0.2);
+        box-shadow: 0 12px 26px rgba(214, 51, 132, 0.22);
     }
 
     @media (max-width: 991px) {

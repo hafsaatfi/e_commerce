@@ -27,6 +27,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('logout/', LogoutView.as_view(), name='logout'),
 
+    path('commane/', RedirectView.as_view(url='/commande/', permanent=False), name='commane-alias'),
+
     path('users/', include('users.urls')),
     path('gestion/', include('gestion.urls')),
     path('produits/', include('produit.urls')),
