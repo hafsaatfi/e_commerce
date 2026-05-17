@@ -22,13 +22,31 @@
         <p class="fs-4 fw-bold">{{ produit.prix }} DH</p>
         <p>Stock disponible: {{ produit.stock }}</p>
         <p>{{ produit.description }}</p>
-
         <div class="d-flex gap-2 mt-3">
             <a href="{% url 'produit:liste_produits' %}" class="btn btn-secondary">&#8592; MonShop</a>
             <a href="{% url 'avis:avis-product' produit.id %}" class="btn btn-outline-primary">Voir les avis</a>
             {% if average %}
                 <div class="align-self-center ms-3">Note moyenne: <strong>{{ average }} / 5</strong></div>
             {% endif %}
+        </div>
+
+        {# Affichage du score en étoiles (0-5) #}
+        <div class="mt-4">
+            <style>
+                .product-stars .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400; font-size: 24px; vertical-align: middle; }
+                .product-stars .star-filled { font-variation-settings: 'FILL' 1 !important; color: #f59e0b; }
+                .product-stars .star-empty { font-variation-settings: 'FILL' 0 !important; color: #d1d5db; }
+            </style>
+            {% with produit.score_etoiles|default:0 as score %}
+                <div class="product-stars">
+                    <span class="material-symbols-outlined {% if score >= 1 %}star-filled{% else %}star-empty{% endif %}">star</span>
+                    <span class="material-symbols-outlined {% if score >= 2 %}star-filled{% else %}star-empty{% endif %}">star</span>
+                    <span class="material-symbols-outlined {% if score >= 3 %}star-filled{% else %}star-empty{% endif %}">star</span>
+                    <span class="material-symbols-outlined {% if score >= 4 %}star-filled{% else %}star-empty{% endif %}">star</span>
+                    <span class="material-symbols-outlined {% if score >= 5 %}star-filled{% else %}star-empty{% endif %}">star</span>
+                    <span class="ms-2 text-muted">({{ score }} / 5)</span>
+                </div>
+            {% endwith %}
         </div>
     </div>
 </div>

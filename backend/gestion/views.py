@@ -11,6 +11,7 @@ from commande.models import ArticleCommande, Commande
 from ia_recommandation.models import IA_Recommandation
 from panier.models import ArticlePanier, Panier
 from produit.models import Categorie, Produit
+from produit.forms import ProduitForm, CategorieForm
 from users.models import Utilisateur
 from users.permissions import admin_required
 
@@ -84,6 +85,22 @@ class UserAdminForm(forms.ModelForm):
         return user
 
 
+class CommandeAdminForm(forms.ModelForm):
+    class Meta:
+        model = Commande
+        fields = ['utilisateur', 'montant_total', 'statut']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            if isinstance(field.widget, forms.Select):
+                field.widget.attrs['class'] = 'w-full rounded-xl border border-outline-variant/40 bg-surface-container-low px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'
+            elif isinstance(field.widget, forms.FileInput):
+                field.widget.attrs['class'] = 'w-full rounded-xl border border-outline-variant/40 bg-surface-container-low px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'
+            else:
+                field.widget.attrs['class'] = 'w-full rounded-xl border border-outline-variant/40 bg-surface-container-low px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'
+
+
 def get_entity_config(entity):
     config = ENTITY_CONFIGS.get(entity)
     if not config:
@@ -109,6 +126,12 @@ def format_value(value):
 def build_form_class(model):
     if model is Utilisateur:
         return UserAdminForm
+    if model is Commande:
+        return CommandeAdminForm
+    if model is Produit:
+        return ProduitForm
+    if model is Categorie:
+        return CategorieForm
 
     form_fields = []
     widgets = {}
@@ -184,12 +207,35 @@ def entity_list(request, entity):
     fields = get_model_fields(model)
     objects = model.objects.all().order_by('-pk')
 
+    import json
     rows = []
+    text_content_map = {}  # Stockage des descriptions
+    text_field_names = []  # Noms des TextField
+    
+    for field in fields:
+        if isinstance(field, models.TextField):
+            text_field_names.append(field.name)
+    
     for obj in objects:
-        rows.append({
+        row_data = {
             'pk': obj.pk,
-            'values': [format_value(getattr(obj, field.name)) for field in fields],
-        })
+            'values': [],
+        }
+        for field in fields:
+            value = getattr(obj, field.name)
+            # Si c'est un TextField, stocker séparément
+            if isinstance(field, models.TextField):
+                text_content_map[f"{obj.pk}_{field.name}"] = value
+                row_data['values'].append({
+                    'type': 'text_field',
+                    'field_name': field.name,
+                })
+            else:
+                row_data['values'].append({
+                    'type': 'normal',
+                    'value': format_value(value),
+                })
+        rows.append(row_data)
 
     return render_gestion(request, 'gestion/object_list.html', {
         'entity': entity,
@@ -197,6 +243,8 @@ def entity_list(request, entity):
         'detail_label': config['detail_label'],
         'fields': fields,
         'rows': rows,
+        'text_content_map': json.dumps(text_content_map),
+        'text_field_names': text_field_names,
     })
 
 

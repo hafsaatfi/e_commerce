@@ -47,7 +47,7 @@
 
 {% block content %}
 <div class="min-h-screen flex overflow-hidden bg-surface text-on-surface">
-    <aside class="hidden lg:flex flex-col w-72 bg-surface-container border-r border-outline-variant/40 h-screen sticky top-0">
+    <aside id="adminSidebar" class="hidden lg:flex flex-col w-72 bg-surface-container border-r border-outline-variant/40 h-screen fixed left-0 top-0 transition-all duration-300">
         <div class="p-8">
             <h1 class="noto-serif text-2xl font-bold tracking-[0.15em] bg-gradient-to-r from-pink-500 via-pink-300 to-fuchsia-400 bg-clip-text text-transparent drop-shadow-lg">CosméBeauty</h1>
             <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mt-1 opacity-60">Admin Console</p>
@@ -87,11 +87,16 @@
         </div>
     </aside>
 
-    <div class="flex-grow flex flex-col h-screen overflow-y-auto">
+    <div class="flex-grow flex flex-col h-screen overflow-y-auto transition-all duration-300" id="mainContent" style="margin-left: 288px;">
         <header class="sticky top-0 z-40 bg-pink-100/90 backdrop-blur-xl border-b border-pink-200/20 px-6 lg:px-8 py-4 flex justify-between items-center">
-            <div>
-                <h2 class="noto-serif text-2xl font-bold text-pink-800">{% block gestion_title %}Espace administrateur{% endblock %}</h2>
-                <p class="text-xs text-pink-600">Gestion élégante et féminine de votre plateforme</p>
+            <div class="flex items-center gap-4">
+                <button id="toggleSidebar" class="hidden lg:flex items-center justify-center w-10 h-10 rounded-xl hover:bg-pink-200/50 transition-colors" title="Fermer la barre latérale">
+                    <span class="material-symbols-outlined text-pink-700">menu</span>
+                </button>
+                <div>
+                    <h2 class="noto-serif text-2xl font-bold text-pink-800">{% block gestion_title %}Espace administrateur{% endblock %}</h2>
+                    <p class="text-xs text-pink-600">Gestion élégante et féminine de votre plateforme</p>
+                </div>
             </div>
             <a href="{% url 'gestion:entity_create' 'produits' %}" class="hidden md:inline-flex items-center gap-2 bg-gradient-to-r from-pink-400 to-pink-500 px-4 py-2 rounded-full text-white text-[11px] font-bold uppercase tracking-widest hover:from-pink-500 hover:to-pink-600 transition-all shadow-md shadow-pink-300/40">
                 <span class="material-symbols-outlined text-sm">add</span>
@@ -133,3 +138,48 @@
     </a>
 </nav>
 {% endblock %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const sidebar = document.getElementById('adminSidebar');
+    const mainContent = document.getElementById('mainContent');
+
+    // Wrapper sûr pour localStorage (certains navigateurs bloquent l'accès)
+    function storageGet(key) {
+        try { return localStorage.getItem(key); } catch (e) { return null; }
+    }
+    function storageSet(key, value) {
+        try { localStorage.setItem(key, value); } catch (e) { /* stockage non disponible */ }
+    }
+
+    // Récupérer l'état sauvegardé (par défaut: ouvert)
+    let sidebarOpen = storageGet('adminSidebarOpen') !== 'false';
+
+    function updateSidebarUI() {
+        if (sidebarOpen) {
+            // Sidebar visible
+            if (sidebar) sidebar.style.transform = 'translateX(0)';
+            if (mainContent) mainContent.style.marginLeft = '288px';
+            if (toggleBtn) toggleBtn.innerHTML = '<span class="material-symbols-outlined text-pink-700">menu_open</span>';
+        } else {
+            // Sidebar cachée
+            if (sidebar) sidebar.style.transform = 'translateX(-100%)';
+            if (mainContent) mainContent.style.marginLeft = '0';
+            if (toggleBtn) toggleBtn.innerHTML = '<span class="material-symbols-outlined text-pink-700">menu</span>';
+        }
+    }
+
+    // Appliquer l'état initial
+    updateSidebarUI();
+
+    // Toggle au clic
+    if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', function() {
+            sidebarOpen = !sidebarOpen;
+            updateSidebarUI();
+            storageSet('adminSidebarOpen', sidebarOpen);
+        });
+    }
+});
+</script>

@@ -45,7 +45,7 @@ def modifier_quantite(request, article_id):
                 article.delete()
         except (ValueError, TypeError):
             pass
-    return redirect('panier')
+    return redirect('panier:panier')
 
 @login_required
 def supprimer_article(request, article_id):

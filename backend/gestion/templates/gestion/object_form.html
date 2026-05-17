@@ -6,10 +6,10 @@
 <div class="max-w-4xl mx-auto bg-white rounded-3xl border border-outline-variant/30 p-6 lg:p-8">
     <h3 class="noto-serif text-3xl text-pink-800 mb-6">{{ title }}</h3>
 
-    <form method="post" enctype="multipart/form-data" class="space-y-5">
+    <form method="post" enctype="multipart/form-data" class="space-y-5" id="gestion-form">
         {% csrf_token %}
         {% for field in form %}
-            <div>
+            <div {% if field.name == 'score_etoiles' %}id="score_etoiles_group" style="display: none;"{% endif %}>
                 <label class="block text-xs font-bold uppercase tracking-widest text-pink-600 mb-2" for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
                 {% if field.help_text %}
@@ -27,4 +27,28 @@
         </div>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const isFavoriCheckbox = document.getElementById('id_is_favori');
+    const scoreEtoilesGroup = document.getElementById('score_etoiles_group');
+    
+    if (isFavoriCheckbox) {
+        // Fonction pour mettre à jour la visibilité
+        function updateScoreVisibility() {
+            if (isFavoriCheckbox.checked) {
+                scoreEtoilesGroup.style.display = 'block';
+            } else {
+                scoreEtoilesGroup.style.display = 'none';
+            }
+        }
+        
+        // Écouter les changements du checkbox
+        isFavoriCheckbox.addEventListener('change', updateScoreVisibility);
+        
+        // Appliquer l'état initial
+        updateScoreVisibility();
+    }
+});
+</script>
 {% endblock %}

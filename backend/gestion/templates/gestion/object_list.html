@@ -25,8 +25,17 @@
             <tbody>
                 {% for row in rows %}
                     <tr class="border-t border-outline-variant/20">
-                        {% for value in row.values %}
-                            <td class="px-4 py-4">{{ value }}</td>
+                        {% for item in row.values %}
+                            <td class="px-4 py-4">
+                                {% if item.type == 'text_field' %}
+                                    <button class="desc-btn px-3 py-2 rounded-xl border border-pink-300 text-pink-600 text-[11px] font-semibold hover:bg-pink-50 transition flex items-center gap-1" data-pk="{{ row.pk }}" data-field="{{ item.field_name }}">
+                                        <span class="material-symbols-outlined" style="font-size: 14px; font-variation-settings: 'FILL' 0;">info</span>
+                                        Voir plus
+                                    </button>
+                                {% else %}
+                                    {{ item.value }}
+                                {% endif %}
+                            </td>
                         {% endfor %}
                         <td class="px-4 py-4">
                             <div class="flex justify-end gap-2">
@@ -45,4 +54,51 @@
         </table>
     </div>
 </div>
+
+<!-- Modal pour afficher le contenu complet -->
+<div id="contentModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-8 max-w-2xl w-full mx-4 border border-outline-variant/30">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="noto-serif text-2xl text-pink-800" id="modalTitle">Contenu</h3>
+            <button id="closeModal" class="text-pink-600 hover:text-pink-800 text-2xl">&times;</button>
+        </div>
+        <div id="modalContent" class="text-on-surface mb-6 max-h-96 overflow-y-auto whitespace-pre-wrap"></div>
+        <div class="flex justify-end">
+            <button id="closeModalBtn" class="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-400 to-pink-500 text-white text-xs font-bold uppercase tracking-widest hover:from-pink-500 hover:to-pink-600 transition">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Stockage des données pour le modal -->
+<script>
+    const textContentMap = {{ text_content_map|safe }};
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const descBtns = document.querySelectorAll('.desc-btn');
+        const modal = document.getElementById('contentModal');
+        const closeModal = document.getElementById('closeModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+
+        descBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const pk = this.dataset.pk;
+                const field = this.dataset.field;
+                const key = `${pk}_${field}`;
+                
+                modalTitle.textContent = field.charAt(0).toUpperCase() + field.slice(1);
+                modalContent.textContent = textContentMap[key] || 'Contenu non disponible';
+                modal.classList.remove('hidden');
+            });
+        });
+
+        closeModal.addEventListener('click', () => modal.classList.add('hidden'));
+        closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.add('hidden');
+        });
+    });
+</script>
 {% endblock %}
