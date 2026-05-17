@@ -1,83 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
-
-    .confirm-card {
-        font-family: 'Manrope', 'Poppins', sans-serif;
-        background: #ffffff;
-        border-radius: 22px;
-        border: 1px solid #f1d4e8;
-        overflow: hidden;
-        box-shadow: 0 20px 55px rgba(214, 51, 132, 0.12);
-    }
-
-    body {
-        background: linear-gradient(120deg, #ffe4ec 0%, #f3e6fa 100%);
-    }
-
-    .confirm-hero {
-        background: linear-gradient(135deg, #f8bbd0 0%, #e1bee7 100%);
-        color: #ffffff;
-        border-bottom: 1px solid #f1d4e8;
-        padding: 30px;
-    }
-
-    .pill,
-    .status-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-    .pill {
-        background: #ffffff;
-        color: #a64ca6;
-        border: 1px solid #f1d4e8;
-    }
-
-    .status-pill {
-        background: #ffffff;
-        color: #a64ca6;
-        border: 1px solid #f1d4e8;
-    }
-
-    .detail-box {
-        background: #ffffff;
-        border: 1px solid #f1d4e8;
-        border-radius: 12px;
-        padding: 20px;
-        height: 100%;
-    }
-
-    .order-line {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 12px 0;
-        border-bottom: 1px solid #e8e8e8;
-    }
-
-    .order-line:last-child {
-        border-bottom: 0;
-    }
-
-    .mini-label {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: .14em;
-        color: #a64ca6;
-        font-weight: 700;
-    }
-
-    @media (max-width: 991px) {
-        .confirm-card {
-            border-radius: 16px;
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-purple-50 py-12">
+    <div class="bg-white rounded-3xl shadow-xl p-8 max-w-lg w-full border border-pink-100">
+        <div class="flex flex-col items-center mb-6">
+            <span class="material-symbols-outlined text-5xl text-pink-400 mb-2">check_circle</span>
+            <h1 class="font-headline text-3xl text-pink-500 mb-2">Commande confirmée !</h1>
+            <p class="text-on-surface-variant text-center">Merci pour votre confiance. Votre commande a bien été enregistrée et sera traitée dans les plus brefs délais.</p>
+        </div>
+        {% if commande %}
+        <div class="mb-4">
+            <h2 class="font-bold text-lg mb-2">Détails de la commande</h2>
+            <ul class="mb-2">
+                {% for item in articles %}
+                <li class="flex justify-between border-b border-pink-50 py-1">
+                    <span>{{ item.produit.nom }} <span class="text-xs text-pink-400">x{{ item.quantite }}</span></span>
+                    <span class="font-semibold">{{ item.prix }} DH</span>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="flex justify-between font-bold text-pink-600 mt-2">
+                <span>Total</span>
+                <span>{{ commande.montant_total }} DH</span>
+            </div>
+        </div>
+        <div class="mb-2 text-sm text-on-surface-variant">
+            <b>Livraison :</b> {{ commande.delivery_method|default:"-" }}<br>
+            <b>Adresse :</b> {{ commande.address|default:"-" }}, {{ commande.ville|default:"-" }} {{ commande.quartier|default:"" }}
+        </div>
+        <div class="text-xs text-on-surface-variant italic mb-2">Un email de confirmation vous sera envoyé si vous l'avez renseigné.</div>
+        {% endif %}
+        <a href="/produits/" class="mt-4 inline-block px-6 py-2 rounded-full bg-gradient-to-r from-pink-400 to-pink-500 text-white font-bold uppercase tracking-widest shadow hover:from-pink-500 hover:to-pink-600 transition">Retour à la boutique</a>
+    </div>
+</div>
         }
     }
 </style>
