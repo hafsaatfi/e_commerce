@@ -81,3 +81,8 @@ def confirmation(request):
         'commande': commande,
         'articles': articles,
     })
+
+@login_required
+def historique(request):
+    commandes = Commande.objects.filter(utilisateur=request.user).order_by('-date_creation')
+    return render(request, 'commande/historique.html', {'commandes': commandes})

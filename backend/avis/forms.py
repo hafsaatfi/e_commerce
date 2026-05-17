@@ -2,12 +2,20 @@ from django import forms
 from .models import Avis
 
 class AvisForm(forms.ModelForm):
+    NOTE_CHOICES = [
+        (1, 'Médiocre'),
+        (2, 'Passable'),
+        (3, 'Moyen'),
+        (4, 'Bon'),
+        (5, 'Excellent'),
+    ]
+    note = forms.TypedChoiceField(choices=NOTE_CHOICES, coerce=int, widget=forms.RadioSelect)
+
     class Meta:
         model = Avis
         fields = ['note', 'commentaire']
         widgets = {
-            'note': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'form-control form-control-sm'}),
-            'commentaire': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'commentaire': forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'placeholder': 'Partagez votre expérience avec ce produit...'}),
         }
 
     def clean_note(self):

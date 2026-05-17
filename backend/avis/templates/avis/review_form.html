@@ -99,40 +99,32 @@
         min-height: 120px;
     }
 
-    .rating-selector {
+    .star-rating {
         display: flex;
-        gap: 1rem;
-        justify-content: space-around;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        gap: 0.25rem;
     }
 
-    .rating-option {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-    }
-
-    .rating-option input[type="radio"] {
+    .star-rating input[type="radio"] {
         display: none;
     }
 
-    .rating-star {
-        font-size: 2.5rem;
-        transition: all 0.3s ease;
-        filter: grayscale(100%);
+    .star-rating label {
+        font-size: 3.5rem;
+        color: #e0e0e0;
+        cursor: pointer;
+        transition: color 0.2s, transform 0.2s;
     }
 
-    .rating-option input[type="radio"]:checked + .rating-star,
-    .rating-option:hover .rating-star {
-        filter: grayscale(0%);
-        transform: scale(1.2);
+    .star-rating label:hover,
+    .star-rating label:hover ~ label,
+    .star-rating input[type="radio"]:checked ~ label {
+        color: #ffca28; /* Gold color */
     }
 
-    .rating-label {
-        font-size: 0.8rem;
-        margin-top: 0.5rem;
-        color: #7f8c8d;
-        font-weight: 500;
+    .star-rating label:hover {
+        transform: scale(1.1);
     }
 
     .error-message {
@@ -234,19 +226,21 @@
             <!-- Rating Selection -->
             <div class="form-group">
                 <label>Votre note</label>
-                <div class="rating-selector">
-                    {% for value, label in form.note.field.choices %}
-                        <div class="rating-option">
-                            <input type="radio" name="note" value="{{ value }}" id="rating_{{ value }}" 
-                                {% if form.note.value == value|stringformat:"s" or form.note.value == value %}checked{% endif %}>
-                            <label for="rating_{{ value }}" class="rating-star">
-                                {% for i in "12345" %}
-                                    {% if i|add:0 <= value %}★{% else %}☆{% endif %}
-                                {% endfor %}
-                            </label>
-                            <span class="rating-label">{{ label }}</span>
-                        </div>
-                    {% endfor %}
+                <div class="star-rating">
+                    <input type="radio" name="note" value="5" id="star5" {% if form.note.value|stringformat:"s" == "5" %}checked{% endif %} required>
+                    <label for="star5" title="5 - Excellent">★</label>
+                    
+                    <input type="radio" name="note" value="4" id="star4" {% if form.note.value|stringformat:"s" == "4" %}checked{% endif %}>
+                    <label for="star4" title="4 - Bon">★</label>
+                    
+                    <input type="radio" name="note" value="3" id="star3" {% if form.note.value|stringformat:"s" == "3" %}checked{% endif %}>
+                    <label for="star3" title="3 - Moyen">★</label>
+                    
+                    <input type="radio" name="note" value="2" id="star2" {% if form.note.value|stringformat:"s" == "2" %}checked{% endif %}>
+                    <label for="star2" title="2 - Passable">★</label>
+                    
+                    <input type="radio" name="note" value="1" id="star1" {% if form.note.value|stringformat:"s" == "1" %}checked{% endif %}>
+                    <label for="star1" title="1 - Médiocre">★</label>
                 </div>
                 {% for e in form.note.errors %}<div class="error-message">{{ e }}</div>{% endfor %}
             </div>

@@ -1,143 +1,78 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+<div class="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl p-8 mb-8 border border-pink-100/50 flex flex-col md:flex-row items-center justify-between">
+            <div class="text-center md:text-left mb-4 md:mb-0">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink-100 text-pink-600 font-bold text-sm uppercase tracking-widest mb-4">
+                    <span class="material-symbols-outlined text-base">history</span>
+                    Historique
+                </div>
+                <h1 class="text-3xl font-extrabold text-gray-800 tracking-tight">Toutes vos commandes</h1>
+                <p class="text-gray-500 mt-2">Consultez rapidement vos achats passés, montants et détails.</p>
+            </div>
+            <a href="/produits/" class="bg-gray-900 text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider hover:bg-gray-800 transition shadow-lg hover:-translate-y-0.5">
+                Nouvelle Commande
+            </a>
+        </div>
 
-    .history-card {
-        font-family: 'Manrope', 'Poppins', sans-serif;
-        background: #ffffff;
-        border: 1px solid #f1d4e8;
-        border-radius: 22px;
-        box-shadow: 0 20px 55px rgba(214, 51, 132, 0.12);
-        overflow: hidden;
-    }
-
-    body {
-        background: linear-gradient(120deg, #ffe4ec 0%, #f3e6fa 100%);
-    }
-
-    .history-hero {
-        background: linear-gradient(135deg, #f8bbd0 0%, #e1bee7 100%);
-        color: #ffffff;
-        border-bottom: 1px solid #f1d4e8;
-        padding: 30px;
-    }
-
-    .order-card {
-        border: 1px solid #f1d4e8;
-        border-radius: 12px;
-        background: #ffffff;
-        padding: 20px;
-    }
-
-    .history-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 11px;
-        border-radius: 999px;
-        background: #ffffff;
-        color: #a64ca6;
-        border: 1px solid #f1d4e8;
-        font-size: 12px;
-        font-weight: 700;
-    }
-
-    .mini-label {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: .14em;
-        color: #a64ca6;
-        font-weight: 700;
-    }
-
-    .product-chip {
-        display: inline-flex;
-        align-items: center;
-        border: 1px solid #f1d4e8;
-        background: #ffffff;
-        border-radius: 999px;
-        padding: 4px 10px;
-        font-size: 12px;
-        color: #a64ca6;
-    }
-
-    .action-btn {
-        border-radius: 2rem;
-        padding: 0.82rem 1.35rem;
-        font-weight: 700;
-    }
-
-    .btn-dark.action-btn {
-        background: linear-gradient(90deg, #f8bbd0 0%, #e1bee7 100%);
-        border: none;
-        color: #ffffff;
-    }
-
-    .btn-outline-secondary.action-btn {
-        border-color: #e1bee7;
-        color: #a64ca6;
-        background: #ffffff;
-    }
-
-    @media (max-width: 991px) {
-        .history-card {
-            border-radius: 16px;
-        }
-    }
-</style>
-
-<div class="history-card">
-    <div class="history-hero">
-        <div class="history-chip mb-3">Historique commandes</div>
-        <h1 class="h2 fw-bold mb-2">Toutes tes commandes au même endroit</h1>
-        <p class="mb-0 text-muted">Consulte rapidement tes achats passés, leurs montants et leurs informations de livraison.</p>
-    </div>
-
-    <div class="p-4 p-md-5">
+        <!-- Orders List -->
         {% if commandes %}
-            <div class="d-grid gap-3">
-                {% for commande in commandes %}
-                    <div class="order-card">
-                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-                            <div>
-                                <p class="mini-label mb-1">Commande #{{ commande.commande_id }}</p>
-                                <h2 class="h5 mb-0">{{ commande.date_creation|date:"d/m/Y H:i" }}</h2>
-                            </div>
-                            <span class="history-chip">{{ commande.status }}</span>
-                        </div>
+        <div class="space-y-6">
+            {% for commande in commandes %}
+            <div class="bg-white rounded-3xl shadow-lg border border-pink-50 overflow-hidden hover:shadow-xl transition duration-300">
+                <!-- Order Header -->
+                <div class="bg-gradient-to-r from-pink-50 to-purple-50 p-6 border-b border-pink-100 flex flex-wrap justify-between items-center gap-4">
+                    <div>
+                        <span class="text-gray-400 text-sm font-semibold uppercase tracking-wider">Commande #{{ commande.id }}</span>
+                        <h2 class="text-xl font-bold text-gray-800 mt-1">{{ commande.date_creation|date:"d M Y, H:i" }}</h2>
+                    </div>
+                    <div>
+                        <span class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-sm bg-white text-pink-600 border border-pink-200">
+                            {{ commande.get_statut_display|default:commande.statut }}
+                        </span>
+                    </div>
+                </div>
 
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <p class="mb-1 text-muted small">Total</p>
-                                <div class="fw-bold">{{ commande.total }} DH</div>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="mb-1 text-muted small">Livraison</p>
-                                <div class="fw-bold">{{ commande.delivery_method_label }}</div>
-                            </div>
+                <!-- Order Body -->
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+                            <span class="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1">Montant Total</span>
+                            <span class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600">{{ commande.montant_total }} DH</span>
                         </div>
-
-                        <div class="mt-3">
-                            <p class="mb-2 text-muted small">Produits</p>
-                            <div class="d-flex flex-wrap gap-2">
-                                {% for item in commande.articles %}
-                                    <span class="product-chip">{{ item.nom }} × {{ item.quantite }}</span>
-                                {% endfor %}
-                            </div>
+                        <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+                            <span class="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1">Livraison</span>
+                            <span class="text-lg font-bold text-gray-800 capitalize">{{ commande.delivery_method|default:"Standard" }}</span>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="alert alert-light border mb-0">Aucune commande passée pour le moment.</div>
-        {% endif %}
 
-        <div class="d-flex gap-2 flex-wrap mt-4">
-            <a href="/commande/suivi/" class="btn btn-dark action-btn">Retour au suivi</a>
-            <a href="/produits/" class="btn btn-outline-secondary action-btn">Explorer les produits</a>
+                    <div>
+                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-3">Produits achetés</span>
+                        <div class="flex flex-wrap gap-3">
+                            {% for item in commande.articlecommande_set.all %}
+                            <div class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm hover:border-pink-300 transition">
+                                <span class="font-bold text-gray-700">{{ item.produit.nom }}</span>
+                                <span class="bg-pink-100 text-pink-600 rounded-full px-2 py-0.5 text-xs font-bold">&times;{{ item.quantite }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
+        {% else %}
+        <div class="bg-white rounded-3xl shadow-xl p-12 text-center border border-pink-100">
+            <span class="material-symbols-outlined text-6xl text-gray-300 mb-4 block">inbox</span>
+            <div class="text-xl font-semibold text-gray-600 mb-8">
+                Aucune commande passée pour le moment.
+            </div>
+            <a href="/produits/" class="inline-block px-8 py-3 rounded-full bg-gray-900 text-white font-bold uppercase tracking-widest shadow hover:shadow-lg transition hover:-translate-y-0.5">Explorer les produits</a>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

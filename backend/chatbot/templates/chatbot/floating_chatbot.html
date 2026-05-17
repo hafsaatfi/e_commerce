@@ -354,9 +354,7 @@
 </style>
 
 <!-- Floating Chat Widget HTML -->
-<button class="floating-chat-btn" id="floatingChatBtn" title="Ouvrir le chatbot">
-    💬
-</button>
+<!-- Bouton flottant retiré (annulé) comme demandé -->
 
 <div class="floating-chat-popup" id="floatingChatPopup">
     <!-- Header -->
@@ -399,7 +397,9 @@
 
         init() {
             // Event listeners
-            this.btn.addEventListener('click', () => this.toggle());
+            if (this.btn) {
+                this.btn.addEventListener('click', () => this.toggle());
+            }
             this.closeBtn.addEventListener('click', () => this.close());
             this.sendBtn.addEventListener('click', () => this.sendMessage());
             this.input.addEventListener('keydown', (e) => {
@@ -425,7 +425,7 @@
             this.isOpen = true;
             this.popup.classList.add('open');
             this.popup.classList.remove('closing');
-            this.btn.classList.add('open');
+            if (this.btn) this.btn.classList.add('open');
             this.input.focus();
             this.scrollToBottom();
         }
@@ -434,7 +434,7 @@
             this.isOpen = false;
             this.popup.classList.remove('open');
             this.popup.classList.add('closing');
-            this.btn.classList.remove('open');
+            if (this.btn) this.btn.classList.remove('open');
             
             setTimeout(() => {
                 this.popup.classList.remove('closing');
@@ -545,6 +545,6 @@
 
     // Initialize when DOM is ready
     document.addEventListener('DOMContentLoaded', function() {
-        new FloatingChatbot();
+        window.appChatbot = new FloatingChatbot();
     });
 </script>

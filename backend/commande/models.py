@@ -15,11 +15,11 @@ class Commande(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
 
     # Champs checkout
-    full_name = models.CharField(max_length=120)
-    phone = models.CharField(max_length=20)
+    full_name = models.CharField(max_length=120, default='')
+    phone = models.CharField(max_length=20, default='')
     email = models.EmailField(blank=True, null=True)
-    address = models.CharField(max_length=255)
-    ville = models.CharField(max_length=120)
+    address = models.CharField(max_length=255, default='')
+    ville = models.CharField(max_length=120, default='')
     quartier = models.CharField(max_length=120, blank=True, null=True)
     skin_type = models.CharField(max_length=32, blank=True, null=True)
     delivery_method = models.CharField(max_length=32, blank=True, null=True)
@@ -32,3 +32,7 @@ class ArticleCommande(models.Model):
     produit = models.ForeignKey(Produit, on_delete=models.CASCADE)
     quantite = models.IntegerField()
     prix = models.DecimalField(max_digits=10, decimal_places=2)
+
+    @property
+    def sous_total(self):
+        return self.quantite * self.prix
