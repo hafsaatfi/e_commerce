@@ -1,11 +1,12 @@
 from django.urls import path
 
-from .views import dashboard, entity_create, entity_delete, entity_detail, entity_list, entity_update
+from .views import dashboard, entity_create, entity_delete, entity_detail, entity_list, entity_update, recommendation_audit
 
 app_name = 'gestion'
 
 urlpatterns = [
     path('', dashboard, name='dashboard'),
+    path('recommandations/', recommendation_audit, name='recommendation_audit'),
     path('<str:entity>/<int:object_id>/', entity_detail, name='entity_detail'),
     path('<str:entity>/<int:object_id>/modifier/', entity_update, name='entity_update'),
     path('<str:entity>/<int:object_id>/supprimer/', entity_delete, name='entity_delete'),

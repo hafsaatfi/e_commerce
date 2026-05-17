@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .forms import CategorieForm, ProduitForm
 from .models import Categorie, Produit
 from users.permissions import admin_required
+from users.recommendations import record_user_activity
 
 
 def liste_produits(request):
@@ -35,6 +36,14 @@ from django.db.models import Avg
 
 def detail_produit(request, produit_id):
     produit = get_object_or_404(Produit.objects.select_related('categorie'), id=produit_id)
+    if request.user.is_authenticated:
+        record_user_activity(
+            request.user,
+            action='view_product',
+            produit=produit,
+            categorie=produit.categorie,
+            metadata={'path': request.path},
+        )
     # compute average note and check if current user already reviewed
     from avis.models import Avis
     reviews = Avis.objects.filter(produit=produit)
@@ -103,6 +112,13 @@ def liste_categories(request):
 def detail_categorie(request, categorie_id):
     categorie = get_object_or_404(Categorie, id=categorie_id)
     produits = Produit.objects.filter(categorie=categorie).order_by('nom')
+    if request.user.is_authenticated:
+        record_user_activity(
+            request.user,
+            action='view_category',
+            categorie=categorie,
+            metadata={'path': request.path},
+        )
     context = {
         'categorie': categorie,
         'produits': produits,

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<title>Mes recommandations personnalisées</title>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-surface text-on-surface pb-28">
+    <main class="pt-24 px-5 md:px-8">
+        <h2 class="font-headline text-4xl md:text-5xl mb-6 text-pink-500">Vos recommandations personnalisées</h2>
+        <p class="mb-10 text-on-surface-variant text-lg max-w-2xl">Voici la liste complète de vos recommandations, générées à partir de vos achats, avis, navigation et tendances. Chaque suggestion est accompagnée d'une explication et d'un badge pour plus de transparence.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
+            {% for item in recommandations_ai %}
+                {% with p=item.produit %}
+                <article class="bg-white rounded-2xl p-5 border border-outline-variant/25 hover:bg-surface-container-low transition-colors group relative">
+                    <div class="absolute top-4 right-4">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-pink-100 text-pink-600">{{ item.raison|truncatechars:32 }}</span>
+                    </div>
+                    <div class="aspect-[4/3] rounded-xl overflow-hidden bg-surface-container mb-4">
+                        {% if p.image %}
+                            <img src="{{ p.image.url }}" alt="{{ p.nom }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        {% else %}
+                            <div class="w-full h-full flex items-center justify-center text-pink-500">
+                                <span class="material-symbols-outlined text-5xl">inventory_2</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <h4 class="font-headline text-2xl mb-1">{{ p.nom }}</h4>
+                    <p class="text-xs uppercase tracking-widest text-on-surface-variant mb-2">{{ p.categorie.nom }}</p>
+                    <p class="text-sm text-on-surface-variant mb-3">{{ item.raison }}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-pink-500">{{ p.prix }} DH</span>
+                        <a href="/panier/ajouter/{{ p.id }}/" class="px-3 py-2 rounded-full bg-gradient-to-r from-pink-400 to-pink-500 text-white text-[11px] font-bold uppercase tracking-widest hover:from-pink-500 hover:to-pink-600 transition-all shadow-md shadow-pink-300/40">Ajouter</a>
+                    </div>
+                </article>
+                {% endwith %}
+            {% empty %}
+                <div class="col-span-full bg-white rounded-2xl p-6 border border-outline-variant/25">
+                    <p class="mb-0 text-on-surface-variant">Aucune recommandation personnalisée pour le moment.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+{% endblock %}

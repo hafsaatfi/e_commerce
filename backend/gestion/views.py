@@ -12,7 +12,7 @@ from ia_recommandation.models import IA_Recommandation
 from panier.models import ArticlePanier, Panier
 from produit.models import Categorie, Produit
 from produit.forms import ProduitForm, CategorieForm
-from users.models import Utilisateur
+from users.models import Utilisateur, UserActivity
 from users.permissions import admin_required
 
 ENTITY_CONFIGS = {
@@ -197,6 +197,43 @@ def dashboard(request):
         'entity_counts': entity_counts,
         'primary_entities': primary_entities,
         'secondary_entities': secondary_entities,
+    })
+
+
+@admin_required
+def recommendation_audit(request):
+    recent_activities = (
+        UserActivity.objects.select_related('utilisateur', 'produit', 'categorie')
+        .order_by('-created_at')[:25]
+    )
+    recommendation_rows = []
+
+    for recommendation in IA_Recommandation.objects.select_related('utilisateur').order_by('-date_creation')[:15]:
+        product_ids = []
+        for raw_id in recommendation.list_produit_ids.split(','):
+            raw_id = raw_id.strip()
+            if raw_id.isdigit():
+                product_ids.append(int(raw_id))
+
+        products = list(Produit.objects.filter(id__in=product_ids).select_related('categorie'))
+        product_map = {product.id: product for product in products}
+        ordered_products = [product_map[product_id] for product_id in product_ids if product_id in product_map]
+
+        recommendation_rows.append({
+            'object': recommendation,
+            'products': ordered_products,
+        })
+
+    activity_summary = (
+        UserActivity.objects.values('action')
+        .annotate(total=models.Count('id'))
+        .order_by('-total')
+    )
+
+    return render_gestion(request, 'gestion/recommendation_audit.html', {
+        'recent_activities': recent_activities,
+        'recommendation_rows': recommendation_rows,
+        'activity_summary': activity_summary,
     })
 
 

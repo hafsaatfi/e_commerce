@@ -1,0 +1,141 @@
+{% extends 'gestion/base_gestion.html' %}
+
+{% block gestion_title %}Recommandations IA{% endblock %}
+
+{% block gestion_content %}
+<section class="space-y-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Audit IA</p>
+            <h3 class="noto-serif text-3xl">Activité utilisateur et recommandations générées</h3>
+            <p class="text-sm text-on-surface-variant mt-2">Vue rapide des signaux utilisés pour alimenter la page /users/home/.</p>
+        </div>
+        <a href="{% url 'gestion:dashboard' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-pink-300 text-pink-600 text-sm font-bold hover:bg-pink-50 transition">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            Retour au dashboard
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {% for item in activity_summary %}
+            <article class="bg-white rounded-2xl border border-outline-variant/30 p-5 shadow-sm">
+                <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">{{ item.action }}</p>
+                <h4 class="noto-serif text-3xl mt-2">{{ item.total }}</h4>
+            </article>
+        {% empty %}
+            <article class="bg-white rounded-2xl border border-outline-variant/30 p-5 shadow-sm md:col-span-3">
+                <p class="text-sm text-on-surface-variant">Aucune activité enregistrée pour le moment.</p>
+            </article>
+        {% endfor %}
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <article class="bg-white rounded-3xl border border-outline-variant/30 p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-5">
+                <div>
+                    <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Dernières activités</p>
+                    <h4 class="noto-serif text-2xl">Navigation, panier et achats</h4>
+                </div>
+            </div>
+            <div class="space-y-3">
+                {% for activity in recent_activities %}
+                    <div class="p-4 rounded-2xl bg-gradient-to-r from-pink-50 to-pink-100 border border-pink-200/80 shadow-sm">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-2">
+                                {% if activity.action == 'add_to_cart' %}
+                                    <span class="material-symbols-outlined text-pink-400 text-lg align-middle">add_shopping_cart</span>
+                                {% elif activity.action == 'purchase' %}
+                                    <span class="material-symbols-outlined text-pink-500 text-lg align-middle">paid</span>
+                                {% elif activity.action == 'view_product' %}
+                                    <span class="material-symbols-outlined text-pink-300 text-lg align-middle">visibility</span>
+                                {% elif activity.action == 'view_category' %}
+                                    <span class="material-symbols-outlined text-pink-200 text-lg align-middle">category</span>
+                                {% else %}
+                                    <span class="material-symbols-outlined text-pink-200 text-lg align-middle">info</span>
+                                {% endif %}
+                                <p class="text-sm font-bold text-on-surface mb-0">{{ activity.utilisateur.username }}</p>
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-pink-200/40 text-pink-600 ml-2">
+                                    {% if activity.action == 'add_to_cart' %}
+                                        <span class="material-symbols-outlined text-pink-400 text-xs align-middle">add_shopping_cart</span>
+                                        Ajout au panier
+                                    {% elif activity.action == 'purchase' %}
+                                        <span class="material-symbols-outlined text-pink-500 text-xs align-middle">paid</span>
+                                        Achat
+                                    {% elif activity.action == 'view_product' %}
+                                        <span class="material-symbols-outlined text-pink-300 text-xs align-middle">visibility</span>
+                                        Vue produit
+                                    {% elif activity.action == 'view_category' %}
+                                        <span class="material-symbols-outlined text-pink-200 text-xs align-middle">category</span>
+                                        Vue catégorie
+                                    {% else %}
+                                        <span class="material-symbols-outlined text-pink-200 text-xs align-middle">info</span>
+                                        {{ activity.action|title }}
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <span class="text-[10px] uppercase tracking-widest text-on-surface-variant">{{ activity.created_at|date:"d/m/Y H:i" }}</span>
+                        </div>
+                        <div class="text-xs text-on-surface-variant mt-1">
+                            {% if activity.produit %}
+                                <span class="font-semibold text-pink-500">{{ activity.produit.nom }}</span>
+                                <span class="ml-1 text-pink-400">({{ activity.produit.categorie.nom }})</span>
+                            {% elif activity.categorie %}
+                                <span class="font-semibold text-pink-400">{{ activity.categorie.nom }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-sm text-on-surface-variant">Aucune activité récente.</p>
+                {% endfor %}
+            </div>
+        </article>
+
+        <article class="bg-white rounded-3xl border border-outline-variant/30 p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-5">
+                <div>
+                    <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Historique IA</p>
+                    <h4 class="noto-serif text-2xl">Dernières recommandations calculées</h4>
+                </div>
+            </div>
+            <div class="space-y-4">
+                {% for row in recommendation_rows %}
+                    <div class="p-4 rounded-2xl bg-pink-50 border border-pink-100">
+                        <div class="flex items-center justify-between gap-3 mb-3">
+                            <div>
+                                <p class="text-sm font-bold text-on-surface">{{ row.object.utilisateur.username }}</p>
+                                <p class="text-xs text-on-surface-variant">{{ row.object.date_creation|date:"d/m/Y H:i" }}</p>
+                            </div>
+                            <span class="text-[10px] uppercase tracking-widest text-pink-500 font-bold">{{ row.products|length }} produits</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            {% for product in row.products %}
+                                <div class="flex items-center gap-3 bg-gradient-to-r from-pink-50 to-pink-100 border border-pink-200 rounded-xl p-2 shadow-sm">
+                                    {% if product.image %}
+                                        <img src="{{ product.image.url }}" alt="{{ product.nom }}" class="w-12 h-12 object-cover rounded-lg border border-pink-100">
+                                    {% else %}
+                                        <span class="material-symbols-outlined text-pink-300 text-3xl">inventory_2</span>
+                                    {% endif %}
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-bold text-on-surface">{{ product.nom }}</span>
+                                            <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-pink-100 text-pink-600">{{ product.categorie.nom }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 mt-1">
+                                            <span class="text-xs text-pink-500 font-bold">{{ product.prix }} DH</span>
+                                            {% if product.raison %}
+                                                <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold bg-pink-200/60 text-pink-600">{{ product.raison|truncatechars:18 }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-sm text-on-surface-variant">Aucune recommandation calculée pour le moment.</p>
+                {% endfor %}
+            </div>
+        </article>
+    </div>
+</section>
+{% endblock %}

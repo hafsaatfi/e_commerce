@@ -15,6 +15,10 @@
         <span class="material-symbols-outlined mb-1">shopping_cart</span>
         <span class="text-[10px] font-medium">Cart</span>
     </a>
+    <a href="/users/recommandations/" class="flex flex-col items-center {% if '/recommandations' in request.path %}text-primary{% else %}text-on-surface-variant{% endif %} hover:text-primary transition-colors">
+        <span class="material-symbols-outlined mb-1">auto_awesome</span>
+        <span class="text-[10px] font-medium">Recom.</span>
+    </a>
     <a href="/avis/" class="flex flex-col items-center {% if '/avis' in request.path %}text-primary{% else %}text-on-surface-variant{% endif %} hover:text-primary transition-colors">
         <span class="material-symbols-outlined mb-1">rate_review</span>
         <span class="text-[10px] font-medium">Avis</span>

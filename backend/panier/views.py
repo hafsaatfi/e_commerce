@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from produit.models import Produit
 from .models import Panier, ArticlePanier
 from django.contrib.auth.decorators import login_required
+from users.recommendations import record_user_activity
 
 @login_required
 def ajouter_au_panier(request, produit_id):
@@ -19,6 +20,14 @@ def ajouter_au_panier(request, produit_id):
     # IMPORTANT : remplacer au lieu d’additionner
     article.quantite = quantite
     article.save()
+
+    record_user_activity(
+        request.user,
+        action='add_to_cart',
+        produit=produit,
+        categorie=produit.categorie,
+        metadata={'quantite': quantite},
+    )
 
     return redirect('panier:panier')
 @login_required

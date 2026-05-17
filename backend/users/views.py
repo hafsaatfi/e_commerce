@@ -9,6 +9,27 @@ from produit.models import Categorie, Produit
 from django.db import models
 from avis.models import Avis
 
+from .recommendations import build_home_recommendations
+from django.contrib.auth.decorators import login_required
+@login_required
+def recommendations_page(request):
+    if request.user.is_staff or getattr(request.user, 'role', None) == 'admin':
+        return redirect('gestion:dashboard')
+
+    recommandations_ai = build_home_recommendations(request.user, limit=20)
+    from panier.models import Panier, ArticlePanier
+    panier_count = 0
+    if request.user.is_authenticated:
+        panier = Panier.objects.filter(utilisateur=request.user).first()
+        if panier:
+            panier_count = ArticlePanier.objects.filter(panier=panier).aggregate(models.Sum('quantite'))['quantite__sum'] or 0
+
+    return render(request, 'users/recommendations.html', {
+        'recommandations_ai': recommandations_ai,
+        'panier_count': panier_count,
+        'full_layout': True,
+    })
+
 
 def home(request):
     if request.user.is_authenticated:
@@ -118,8 +139,9 @@ def user_home(request):
         .order_by('-id')[:6]
     )
 
-    # Produits recommandés (non favoris, max 3)
-    produits_recommandes = list(
+    # Produits recommandés par l'IA (avis, achats, navigation, tendances)
+    recommandations_ai = build_home_recommendations(request.user, limit=6)
+    produits_recommandes = [item.produit for item in recommandations_ai] or list(
         Produit.objects.filter(is_favori=False).select_related('categorie')
         .order_by('-id')[:3]
     )
@@ -136,6 +158,7 @@ def user_home(request):
 
     return render(request, 'home.html', {
         'produits': produits_recommandes,
+        'recommandations_ai': recommandations_ai,
         'categories': categories,
         'featured_product': featured_product,
         'produits_favoris': produits_favoris,
